@@ -135,26 +135,40 @@ section h2{
 }
 
 .category-card{
-    background:linear-gradient(145deg,#111,#1a1a1a);
+    background:#111;
     border:1px solid #222;
-
-    padding:35px;
-
-    text-align:center;
-
     border-radius:15px;
-
+    overflow:hidden;
     transition:.3s;
+    cursor:pointer;
+}
 
-    font-size:1.2rem;
+.category-card img{
+    width:100%;
+    height:220px;
+    object-fit:cover;
+    display:block;
+}
+
+.category-card h3{
+    padding:18px;
+    text-align:center;
+    font-size:1.1rem;
 }
 
 .category-card:hover{
     transform:translateY(-8px);
     border-color:#ff0000;
-    box-shadow:0 0 25px rgba(255,0,0,.4);
+    box-shadow:0 0 25px rgba(255,0,0,.35);
 }
 
+.category-card:hover img{
+    transform:scale(1.05);
+}
+
+.category-card img{
+    transition:.4s;
+}
 /* PRODUCTS */
 
 .featured{
