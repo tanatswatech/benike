@@ -26,9 +26,8 @@ z-index:1000;
 }
 
 .logo img{
-height:80px;
+    height:110px;
 }
-
 nav ul{
 display:flex;
 list-style:none;
