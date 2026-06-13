@@ -7,7 +7,8 @@ font-family:'Poppins',sans-serif;
 
 body{
 background:#000;
-color:white;
+color:#fff;
+overflow-x:hidden;
 }
 
 /* HEADER */
@@ -16,30 +17,33 @@ header{
 display:flex;
 justify-content:space-between;
 align-items:center;
-padding:20px 8%;
+padding:15px 8%;
 background:#000;
-border-bottom:2px solid red;
+border-bottom:2px solid #ff0000;
+position:sticky;
+top:0;
+z-index:1000;
 }
 
 .logo img{
-height:70px;
+height:80px;
 }
 
 nav ul{
 display:flex;
-gap:30px;
 list-style:none;
+gap:30px;
 }
 
 nav a{
-color:white;
 text-decoration:none;
+color:white;
 font-weight:500;
-transition:.3s;
+transition:0.3s;
 }
 
 nav a:hover{
-color:red;
+color:#ff0000;
 }
 
 /* HERO */
@@ -50,31 +54,35 @@ display:flex;
 justify-content:center;
 align-items:center;
 text-align:center;
-background:linear-gradient(
-rgba(0,0,0,.7),
-rgba(0,0,0,.8)
+background:
+linear-gradient(
+rgba(0,0,0,0.75),
+rgba(0,0,0,0.85)
 );
 }
 
-.hero h1{
-font-size:60px;
-color:white;
+.hero-content h1{
+font-size:4rem;
+font-weight:700;
 }
 
-.hero p{
-font-size:24px;
-color:red;
-margin:20px 0;
-letter-spacing:3px;
+.hero-content p{
+margin-top:15px;
+font-size:1.5rem;
+letter-spacing:4px;
+color:#ff0000;
 }
 
 .btn{
-background:red;
+display:inline-block;
+margin-top:30px;
 padding:15px 40px;
+background:#ff0000;
 color:white;
 text-decoration:none;
-border-radius:50px;
 font-weight:600;
+border-radius:50px;
+transition:0.3s;
 }
 
 .btn:hover{
@@ -91,31 +99,40 @@ padding:80px 8%;
 .categories h2{
 text-align:center;
 margin-bottom:40px;
+font-size:2rem;
 }
 
 .category-grid{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
 gap:20px;
 }
 
 .category-card{
 background:#111;
+border:1px solid #ff0000;
 padding:40px;
 text-align:center;
-border:1px solid red;
-transition:.3s;
+font-weight:600;
+border-radius:10px;
+transition:0.3s;
 }
 
 .category-card:hover{
 transform:translateY(-5px);
-box-shadow:0 0 20px red;
+box-shadow:0 0 20px #ff0000;
 }
 
 /* PRODUCTS */
 
 .featured{
 padding:80px 8%;
+}
+
+.featured h2{
+text-align:center;
+margin-bottom:40px;
+font-size:2rem;
 }
 
 .product-grid{
@@ -129,26 +146,76 @@ background:#111;
 padding:20px;
 text-align:center;
 border-radius:10px;
+transition:0.3s;
+border:1px solid transparent;
+}
+
+.product-card:hover{
+border-color:#ff0000;
+transform:translateY(-5px);
 }
 
 .product-card img{
 width:100%;
+border-radius:10px;
+}
+
+.product-card h3{
+margin-top:15px;
+}
+
+.product-card p{
+margin-top:10px;
+color:#ff0000;
+font-weight:bold;
 }
 
 .product-card button{
 margin-top:15px;
-padding:12px 20px;
+padding:12px 25px;
+background:#ff0000;
 border:none;
-background:red;
 color:white;
 cursor:pointer;
+border-radius:5px;
+font-weight:600;
+}
+
+.product-card button:hover{
+background:white;
+color:black;
 }
 
 /* FOOTER */
 
 footer{
-padding:30px;
+padding:25px;
 text-align:center;
-border-top:1px solid red;
-margin-top:60px;
+border-top:2px solid #ff0000;
+margin-top:50px;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+header{
+flex-direction:column;
+}
+
+nav ul{
+margin-top:15px;
+gap:15px;
+flex-wrap:wrap;
+justify-content:center;
+}
+
+.hero-content h1{
+font-size:2.5rem;
+}
+
+.hero-content p{
+font-size:1rem;
+}
+
 }
