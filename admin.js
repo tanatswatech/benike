@@ -32,6 +32,7 @@ sheet,
 defval:""
 }
 );
+  console.log(products);
 
 localStorage.setItem(
 "products",
