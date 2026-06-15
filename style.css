@@ -488,3 +488,46 @@ footer{
     padding:12px;
     font-weight:600;
 }
+.hero {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+}
+
+/* VIDEO BACKGROUND */
+.hero-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+}
+
+/* DARK OVERLAY */
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  z-index: -1;
+}
+
+/* TEXT ON TOP */
+.hero-content {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-content h1 {
+  font-size: 3rem;
+  margin-bottom: 10px;
+}
