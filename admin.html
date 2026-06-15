@@ -1,1 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
 
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Benike Admin Dashboard</title>
+
+<link rel="stylesheet" href="admin.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+</head>
+<body>
+
+<div class="sidebar">
+
+    <h2>BENIKE</h2>
+
+    <a href="#">Dashboard</a>
+    <a href="#">Products</a>
+    <a href="#">Analytics</a>
+    <a href="#">Uploads</a>
+
+</div>
+
+<div class="main">
+
+    <h1>Admin Dashboard</h1>
+
+    <div class="stats">
+
+        <div class="card">
+            <h3 id="totalProducts">0</h3>
+            <p>Total Products</p>
+        </div>
+
+        <div class="card">
+            <h3 id="totalCategories">0</h3>
+            <p>Categories</p>
+        </div>
+
+    </div>
+
+    <div class="upload-section">
+
+        <h2>Import Excel Catalogue</h2>
+
+        <input
+        type="file"
+        id="excelFile"
+        accept=".xlsx,.xls">
+
+        <button onclick="uploadExcel()">
+            Import Products
+        </button>
+
+    </div>
+
+    <div class="upload-section">
+
+        <h2>Add Product Image</h2>
+
+        <input
+        type="file"
+        id="imageUpload"
+        accept="image/*">
+
+    </div>
+
+    <div id="previewContainer"></div>
+
+</div>
+
+<script src="admin.js"></script>
+
+</body>
+</html>
