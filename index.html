@@ -45,23 +45,66 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
 <!-- HERO -->
 
-<div class="hero">
-  
-  <!-- VIDEO BACKGROUND -->
-  <video class="hero-video" autoplay muted loop playsinline>
-    <source src="hero.mp4" type="video/mp4">
-  </video>
+<section class="hero-slider">
 
-  <!-- DARK OVERLAY (optional but recommended) -->
-  <div class="hero-overlay"></div>
+    <div class="slide active">
 
-  <!-- TEXT CONTENT -->
-  <div class="hero-content">
-    <h1>BENIKE TECHNOLOGIES</h1>
-    <p>Starlink • Smartphones • Laptops • Accessories</p>
-  </div>
+        <img src="https://cdn11.bigcommerce.com/s-de2pt6jzk5/images/stencil/1280x1280/products/15819/23656/4692_PCI_Starlink_Mini_Hard_Wire_Power_Cable_with_Step_up_Converter_4__42820.1752271825.jpg?c=2&imbypass=on">
 
-</div>
+        <div class="slide-content">
+            <h1>Starlink Internet Solutions</h1>
+            <p>
+                Fast and reliable internet for homes and businesses across Zimbabwe.
+            </p>
+
+            <a href="products.html?category=starlink" class="btn">
+                Shop Starlink
+            </a>
+        </div>
+
+    </div>
+
+    <div class="slide">
+
+        <img src="https://images.pexels.com/photos/19152408/pexels-photo-19152408/free-photo-of-back-of-red-smartphone.jpeg">
+
+        <div class="slide-content">
+            <h1>Latest Smartphones</h1>
+            <p>
+                Samsung, iPhone, Tecno, Redmi, Infinix and more.
+            </p>
+
+            <a href="products.html?category=phones" class="btn">
+                Shop Phones
+            </a>
+        </div>
+
+    </div>
+
+    <div class="slide">
+
+        <img src="https://img.freepik.com/premium-photo/red-laptop-computer-with-geometric-abstract-design-screen-against-red-background-laptop-screen-red-background_939992-11163.jpg?w=2000">
+
+        <div class="slide-content">
+            <h1>Laptops & Computers</h1>
+            <p>
+                Powerful laptops and computers for business, school and gaming.
+            </p>
+
+            <a href="products.html?category=laptops" class="btn">
+                Shop Laptops
+            </a>
+        </div>
+
+    </div>
+
+    <div class="slider-dots">
+        <span class="dot active-dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+    </div>
+
+</section>
 <section class="categories">
 
     <h2>Shop By Category</h2>
@@ -252,6 +295,29 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
     </div>
 
 </footer>
+<script>
 
+let slides = document.querySelectorAll(".slide");
+let dots = document.querySelectorAll(".dot");
+
+let current = 0;
+
+setInterval(() => {
+
+    slides[current].classList.remove("active");
+    dots[current].classList.remove("active-dot");
+
+    current++;
+
+    if(current >= slides.length){
+        current = 0;
+    }
+
+    slides[current].classList.add("active");
+    dots[current].classList.add("active-dot");
+
+},5000);
+
+</script>
 </body>
 </html>
