@@ -113,7 +113,15 @@ filteredProducts.forEach(product => {
 
         <h3>${product.Name}</h3>
 
-        <p>$${product.Price}</p>
+       <p>
+${
+product.Price ||
+product.price ||
+product.Cost ||
+product.cost ||
+"Contact Us"
+}
+</p>
 
         <a
         href="https://wa.me/263784324361?text=Hello Benike Technologies, I would like to order ${product.Name}"
