@@ -26,7 +26,12 @@ workbook.SheetNames[0]
 ];
 
 const products =
-XLSX.utils.sheet_to_json(sheet);
+XLSX.utils.sheet_to_json(
+sheet,
+{
+defval:""
+}
+);
 
 localStorage.setItem(
 "products",
