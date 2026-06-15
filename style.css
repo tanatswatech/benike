@@ -439,3 +439,52 @@ footer{
     }
 
 }
+/* =========================
+   PRODUCT CATEGORY BAR
+========================= */
+
+.product-categories{
+    display:flex;
+    gap:20px;
+    overflow-x:auto;
+    padding:20px 0 40px;
+    margin-bottom:20px;
+}
+
+.product-categories::-webkit-scrollbar{
+    height:8px;
+}
+
+.product-categories::-webkit-scrollbar-thumb{
+    background:#ff0000;
+    border-radius:20px;
+}
+
+.cat-pill{
+    min-width:130px;
+    text-decoration:none;
+    color:white;
+    background:#111;
+    border:1px solid #222;
+    border-radius:15px;
+    overflow:hidden;
+    transition:.3s;
+}
+
+.cat-pill:hover{
+    border-color:#ff0000;
+    transform:translateY(-5px);
+}
+
+.cat-pill img{
+    width:100%;
+    height:90px;
+    object-fit:cover;
+}
+
+.cat-pill span{
+    display:block;
+    text-align:center;
+    padding:12px;
+    font-weight:600;
+}
