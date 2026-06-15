@@ -1,12 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Products | Benike Technologies</title>
 
 <link rel="stylesheet" href="style.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
 </head>
 
 <body>
@@ -14,13 +19,15 @@
 <header>
 
     <div class="logo">
-        <img src="logo.png" alt="Benike">
+        <img src="logo.png" alt="Benike Technologies">
     </div>
 
     <nav>
         <ul>
             <li><a href="index.html">Home</a></li>
             <li><a href="products.html">Products</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
         </ul>
     </nav>
 
@@ -28,7 +35,7 @@
 
 <section class="featured">
 
-    <h2 id="pageTitle">Our Products</h2>
+    <h2 id="pageTitle">All Products</h2>
 
     <div class="product-grid" id="productsContainer">
 
@@ -36,7 +43,93 @@
 
 </section>
 
-<script src="script.js"></script>
+<script>
+
+const products =
+JSON.parse(localStorage.getItem("products")) || [];
+
+const container =
+document.getElementById("productsContainer");
+
+const pageTitle =
+document.getElementById("pageTitle");
+
+const params =
+new URLSearchParams(window.location.search);
+
+const selectedCategory =
+params.get("category");
+
+let filteredProducts = products;
+
+if(selectedCategory){
+
+    filteredProducts =
+    products.filter(product =>
+
+        product.Category &&
+        product.Category.toLowerCase() ===
+        selectedCategory.toLowerCase()
+
+    );
+
+    pageTitle.innerText =
+    selectedCategory.charAt(0).toUpperCase() +
+    selectedCategory.slice(1);
+
+}
+
+if(filteredProducts.length === 0){
+
+    container.innerHTML = `
+
+    <div style="
+        text-align:center;
+        width:100%;
+        padding:50px;
+        font-size:20px;
+    ">
+
+        No products found.
+
+    </div>
+
+    `;
+
+}
+
+filteredProducts.forEach(product => {
+
+    container.innerHTML += `
+
+    <div class="product-card">
+
+        <img
+        src="${product.Image}"
+        alt="${product.Name}"
+
+        onerror="this.src='https://via.placeholder.com/300x250?text=No+Image'"
+        >
+
+        <h3>${product.Name}</h3>
+
+        <p>$${product.Price}</p>
+
+        <a
+        href="https://wa.me/263784324361?text=Hello Benike Technologies, I would like to order ${product.Name}"
+        class="buy-btn">
+
+            WhatsApp Order
+
+        </a>
+
+    </div>
+
+    `;
+
+});
+
+</script>
 
 </body>
 </html>
