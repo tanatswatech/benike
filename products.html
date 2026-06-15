@@ -24,14 +24,27 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
     <nav>
         <ul>
+
             <li><a href="index.html">Home</a></li>
             <li><a href="products.html">Products</a></li>
+
+            <!-- ✅ NEW: CATEGORIES ADDED HERE -->
+            <li><a href="products.html?category=Phones">Phones</a></li>
+            <li><a href="products.html?category=Laptops">Laptops</a></li>
+            <li><a href="products.html?category=Starlink">Starlink</a></li>
+            <li><a href="products.html?category=Audio">Audio</a></li>
+            <li><a href="products.html?category=Gaming">Gaming</a></li>
+            <li><a href="products.html?category=Accessories">Accessories</a></li>
+
             <li><a href="about.html">About</a></li>
             <li><a href="contact.html">Contact</a></li>
+
         </ul>
     </nav>
 
 </header>
+
+
 <section class="featured">
 
     <h2 id="pageTitle">All Products</h2>
@@ -142,21 +155,20 @@ filteredProducts.forEach(product => {
         <img
         src="${product.Image}"
         alt="${product.Name}"
-
         onerror="this.src='https://via.placeholder.com/300x250?text=No+Image'"
         >
 
         <h3>${product.Name}</h3>
 
-       <p>
-${
-product.Price ||
-product.price ||
-product.Cost ||
-product.cost ||
-"Contact Us"
-}
-</p>
+        <p>
+        ${
+        product.Price ||
+        product.price ||
+        product.Cost ||
+        product.cost ||
+        "Contact Us"
+        }
+        </p>
 
         <a
         href="https://wa.me/263784324361?text=Hello Benike Technologies, I would like to order ${product.Name}"
@@ -176,3 +188,6 @@ product.cost ||
 
 </body>
 </html>
+
+
+
