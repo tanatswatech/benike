@@ -1,101 +1,149 @@
-const products = [
+/* ===================================
+   BENIKE PRODUCT SYSTEM
+=================================== */
+
+/* Default products */
+
+const defaultProducts = [
 
 {
-name:"Samsung Galaxy A16",
-price:"$180",
-category:"phones",
-image:"https://images.pexels.com/photos/19152408/pexels-photo-19152408/free-photo-of-back-of-red-smartphone.jpeg"
+Name:"Samsung Galaxy A16",
+Price:"180",
+Category:"phones",
+Image:"https://images.pexels.com/photos/19152408/pexels-photo-19152408/free-photo-of-back-of-red-smartphone.jpeg"
 },
 
 {
-name:"iPhone 13",
-price:"$550",
-category:"phones",
-image:"https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg"
+Name:"HP Laptop",
+Price:"450",
+Category:"laptops",
+Image:"https://img.freepik.com/premium-photo/red-laptop-computer-with-geometric-abstract-design-screen-against-red-background-laptop-screen-red-background_939992-11163.jpg?w=360"
 },
 
 {
-name:"HP Laptop",
-price:"$450",
-category:"laptops",
-image:"https://images.unsplash.com/photo-1496181133206-80ce9b88a853"
+Name:"Starlink Standard Kit",
+Price:"Contact Us",
+Category:"starlink",
+Image:"https://cdn11.bigcommerce.com/s-de2pt6jzk5/images/stencil/1280x1280/products/15819/23656/4692_PCI_Starlink_Mini_Hard_Wire_Power_Cable_with_Step_up_Converter_4__42820.1752271825.jpg"
 },
 
 {
-name:"Lenovo ThinkPad",
-price:"$500",
-category:"laptops",
-image:"https://images.unsplash.com/photo-1517336714739-489689fd1ca8"
+Name:"Wireless Earbuds",
+Price:"25",
+Category:"audio",
+Image:"https://cdn2.37left.lk/images/anker-soundcore-r50i-nc-true-wireless-earbuds-30qPg9F7oCJU.webp"
 },
 
 {
-name:"Starlink Standard Kit",
-price:"Contact Us",
-category:"starlink",
-image:"https://cdn11.bigcommerce.com/s-de2pt6jzk5/images/stencil/1280x1280/products/15819/23656/4692_PCI_Starlink_Mini_Hard_Wire_Power_Cable_with_Step_up_Converter_4__42820.1752271825.jpg"
+Name:"Gaming Headset",
+Price:"40",
+Category:"gaming",
+Image:"https://i.pinimg.com/236x/ea/12/8f/ea128fd2f5382845126eab99c547c365.jpg"
 },
 
 {
-name:"Wireless Earbuds",
-price:"$25",
-category:"audio",
-image:"https://cdn2.37left.lk/images/anker-soundcore-r50i-nc-true-wireless-earbuds-30qPg9F7oCJU.webp"
-},
-
-{
-name:"Gaming Headset",
-price:"$40",
-category:"gaming",
-image:"https://i.pinimg.com/236x/ea/12/8f/ea128fd2f5382845126eab99c547c365.jpg"
-},
-
-{
-name:"USB Hub",
-price:"$15",
-category:"accessories",
-image:"https://img.magnific.com/free-photo/fitness-gym-equipment-with-christmas-theme-decorations_23-2149564349.jpg"
+Name:"USB Hub",
+Price:"15",
+Category:"accessories",
+Image:"https://img.freepik.com/premium-photo/red-black-gaming-accessories-dark-background_1346134-20367.jpg"
 }
 
 ];
 
-const params = new URLSearchParams(window.location.search);
+/* ===================================
+   LOAD PRODUCTS
+=================================== */
 
-const selectedCategory = params.get("category");
+let products =
+JSON.parse(localStorage.getItem("products")) || [];
 
-const container = document.getElementById("productsContainer");
+if(products.length === 0){
 
-const title = document.getElementById("pageTitle");
+products = defaultProducts;
+
+}
+
+/* ===================================
+   PRODUCTS PAGE
+=================================== */
+
+const productsContainer =
+document.getElementById("productsContainer");
+
+if(productsContainer){
+
+const params =
+new URLSearchParams(window.location.search);
+
+const selectedCategory =
+params.get("category");
+
+const pageTitle =
+document.getElementById("pageTitle");
 
 let filteredProducts = products;
 
 if(selectedCategory){
 
-filteredProducts =
-products.filter(product =>
-product.category === selectedCategory
-);
+filteredProducts = products.filter(product => {
 
-title.innerText =
+const category =
+(product.Category || product.category || "")
+.toLowerCase();
+
+return category ===
+selectedCategory.toLowerCase();
+
+});
+
+if(pageTitle){
+
+pageTitle.innerText =
 selectedCategory.charAt(0).toUpperCase() +
 selectedCategory.slice(1);
 
 }
 
+}else{
+
+if(pageTitle){
+
+pageTitle.innerText = "All Products";
+
+}
+
+}
+
+productsContainer.innerHTML = "";
+
 filteredProducts.forEach(product => {
 
-container.innerHTML += `
+const name =
+product.Name || product.name;
+
+const price =
+product.Price || product.price;
+
+const image =
+product.Image || product.image;
+
+productsContainer.innerHTML += `
 
 <div class="product-card">
 
-<img src="${product.image}">
+<img
+src="${image}"
+alt="${name}"
+onerror="this.src='https://via.placeholder.com/300x250?text=No+Image'">
 
-<h3>${product.name}</h3>
+<h3>${name}</h3>
 
-<p>${product.price}</p>
+<p>${price}</p>
 
 <a
-href="https://wa.me/263784324361?text=Hello Benike Technologies, I would like to order ${product.name}"
-class="buy-btn">
+href="https://wa.me/263784324361?text=Hello Benike Technologies, I would like to order ${encodeURIComponent(name)}"
+class="buy-btn"
+target="_blank">
 
 WhatsApp Order
 
@@ -106,3 +154,120 @@ WhatsApp Order
 `;
 
 });
+
+}
+
+/* ===================================
+   HOMEPAGE FEATURED PRODUCTS
+=================================== */
+
+const featuredProducts =
+document.getElementById("featuredProducts");
+
+if(featuredProducts){
+
+featuredProducts.innerHTML = "";
+
+let usedCategories = [];
+
+let selectedProducts = [];
+
+products.forEach(product => {
+
+const category =
+(product.Category || product.category || "")
+.toLowerCase();
+
+if(
+!usedCategories.includes(category)
+&& selectedProducts.length < 6
+){
+
+selectedProducts.push(product);
+
+usedCategories.push(category);
+
+}
+
+});
+
+selectedProducts.forEach(product => {
+
+const name =
+product.Name || product.name;
+
+const price =
+product.Price || product.price;
+
+const image =
+product.Image || product.image;
+
+featuredProducts.innerHTML += `
+
+<div class="product-card">
+
+<img
+src="${image}"
+alt="${name}"
+onerror="this.src='https://via.placeholder.com/300x250?text=No+Image'">
+
+<h3>${name}</h3>
+
+<p>${price}</p>
+
+<a
+href="https://wa.me/263784324361?text=Hello Benike Technologies, I would like to order ${encodeURIComponent(name)}"
+class="buy-btn"
+target="_blank">
+
+WhatsApp Order
+
+</a>
+
+</div>
+
+`;
+
+});
+
+}
+
+/* ===================================
+   HERO SLIDER
+=================================== */
+
+const slides =
+document.querySelectorAll(".slide");
+
+const dots =
+document.querySelectorAll(".dot");
+
+if(slides.length > 0){
+
+let current = 0;
+
+setInterval(() => {
+
+slides[current].classList.remove("active");
+
+if(dots[current]){
+dots[current].classList.remove("active-dot");
+}
+
+current++;
+
+if(current >= slides.length){
+
+current = 0;
+
+}
+
+slides[current].classList.add("active");
+
+if(dots[current]){
+dots[current].classList.add("active-dot");
+}
+
+},5000);
+
+}
