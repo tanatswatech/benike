@@ -152,58 +152,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
     <h2>Featured Products</h2>
 
-    <div class="product-grid">
-
-        <div class="product-card">
-
-            <img src="https://via.placeholder.com/300x250?text=Starlink+Kit">
-
-            <h3>Starlink Standard Kit</h3>
-
-            <p>Contact For Price</p>
-
-            <a href="https://wa.me/263784324361?text=Hello%20Benike%20Technologies,%20I%20would%20like%20a%20Starlink%20Kit"
-            class="buy-btn">
-
-                WhatsApp Order
-
-            </a>
-
-        </div>
-
-        <div class="product-card">
-
-            <img src="https://via.placeholder.com/300x250?text=Samsung+A16">
-
-            <h3>Samsung Galaxy A16</h3>
-
-            <p>Contact For Price</p>
-
-            <a href="https://wa.me/263784324361?text=Hello%20Benike%20Technologies,%20I%20would%20like%20a%20Samsung%20Galaxy%20A16"
-            class="buy-btn">
-
-                WhatsApp Order
-
-            </a>
-
-        </div>
-
-        <div class="product-card">
-
-            <img src="https://via.placeholder.com/300x250?text=Wireless+Earbuds">
-
-            <h3>Wireless Earbuds</h3>
-
-            <p>Contact For Price</p>
-
-            <a href="https://wa.me/263784324361?text=Hello%20Benike%20Technologies,%20I%20would%20like%20Wireless%20Earbuds"
-            class="buy-btn">
-
-                WhatsApp Order
-
-            </a>
-
-        </div>
+    <div class="product-grid" id="featuredProducts">
 
     </div>
 
@@ -319,6 +268,86 @@ setInterval(() => {
     dots[current].classList.add("active-dot");
 
 },5000);
+
+</script>
+    <script>
+
+/* HERO SLIDER */
+
+let slides = document.querySelectorAll(".slide");
+let dots = document.querySelectorAll(".dot");
+
+let current = 0;
+
+setInterval(() => {
+
+    slides[current].classList.remove("active");
+    dots[current].classList.remove("active-dot");
+
+    current++;
+
+    if(current >= slides.length){
+        current = 0;
+    }
+
+    slides[current].classList.add("active");
+    dots[current].classList.add("active-dot");
+
+},5000);
+
+
+/* FEATURED PRODUCTS */
+
+const products =
+JSON.parse(localStorage.getItem("products")) || [];
+
+const featured =
+document.getElementById("featuredProducts");
+
+if(products.length > 0){
+
+    products.slice(0,6).forEach(product => {
+
+        featured.innerHTML += `
+
+        <div class="product-card">
+
+            <img
+            src="${product.Image}"
+            alt="${product.Name}"
+            onerror="this.src='https://via.placeholder.com/300x250?text=No+Image'">
+
+            <h3>${product.Name}</h3>
+
+            <p>$${product.Price}</p>
+
+            <a
+            href="https://wa.me/263784324361?text=Hello Benike Technologies, I would like to order ${product.Name}"
+            class="buy-btn">
+
+                WhatsApp Order
+
+            </a>
+
+        </div>
+
+        `;
+
+    });
+
+}else{
+
+    featured.innerHTML = `
+
+    <div style="width:100%;text-align:center;padding:40px;">
+
+        No products uploaded yet.
+
+    </div>
+
+    `;
+
+}
 
 </script>
 </body>
