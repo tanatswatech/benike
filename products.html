@@ -75,40 +75,39 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
 <script>
 
-const products =
-JSON.parse(localStorage.getItem("products")) || [];
+const products = JSON.parse(localStorage.getItem("products")) || [];
 
-const container =
-document.getElementById("productsContainer");
+const container = document.getElementById("productsContainer");
 
-const pageTitle =
-document.getElementById("pageTitle");
+const params = new URLSearchParams(window.location.search);
 
-const params =
-new URLSearchParams(window.location.search);
+const selectedCategory = params.get("category");
 
-const selectedCategory =
-params.get("category");
 
 let filteredProducts = products;
 
-if(selectedCategory){
 
-    filteredProducts =
-    products.filter(product =>
+// CATEGORY FILTER
+if (selectedCategory) {
 
-        product.Category &&
-        product.Category.toLowerCase() ===
-        selectedCategory.toLowerCase()
+    filteredProducts = products.filter(product => {
 
-    );
+        const productCategory =
+            product.Category ||
+            product.category ||
+            product.CATEGORY ||
+            "";
 
-    pageTitle.innerText =
-    selectedCategory.charAt(0).toUpperCase() +
-    selectedCategory.slice(1);
+        return productCategory.toLowerCase() === 
+        selectedCategory.toLowerCase();
+
+    });
 
 }
 
+
+
+// IF NOTHING FOUND
 if(filteredProducts.length === 0){
 
     container.innerHTML = `
@@ -120,7 +119,7 @@ if(filteredProducts.length === 0){
         font-size:20px;
     ">
 
-        No products found.
+        No products found in ${selectedCategory || "this category"}.
 
     </div>
 
@@ -128,46 +127,73 @@ if(filteredProducts.length === 0){
 
 }
 
+
+
+// DISPLAY PRODUCTS
+
 filteredProducts.forEach(product => {
 
-    container.innerHTML += `
 
-    <div class="product-card">
+container.innerHTML += `
 
-        <img
-        src="${product.Image}"
-        alt="${product.Name}"
-        onerror="this.src='https://via.placeholder.com/300x250?text=No+Image'"
-        >
+<div class="product-card">
 
-        <h3>${product.Name}</h3>
 
-        <p>
-        ${
-        product.Price ||
-        product.price ||
-        product.Cost ||
-        product.cost ||
-        "Contact Us"
-        }
-        </p>
+<img
 
-        <a
-        href="https://wa.me/263784324361?text=Hello Benike Technologies, I would like to order ${product.Name}"
-        class="buy-btn">
+src="${product.Image || product.image}"
 
-            WhatsApp Order
+alt="${product.Name || product.name}"
 
-        </a>
+onerror="this.src='https://via.placeholder.com/300x250?text=No+Image'"
 
-    </div>
+>
 
-    `;
+
+<h3>
+
+${product.Name || product.name}
+
+</h3>
+
+
+<p>
+
+${
+product.Price ||
+product.price ||
+product.Cost ||
+product.cost ||
+"Contact Us"
+
+}
+
+</p>
+
+
+
+<a
+
+href="https://wa.me/263784324361?text=Hello Benike Technologies, I would like to order ${product.Name || product.name}"
+
+class="buy-btn"
+
+>
+
+WhatsApp Order
+
+</a>
+
+
+</div>
+
+
+`;
 
 });
 
-</script>
 
+</script>
 </body>
 </html>
 
