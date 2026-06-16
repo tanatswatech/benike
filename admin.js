@@ -123,8 +123,9 @@ function loadAnalytics() {
    EXCEL UPLOAD (REAL IMPORT)
 ========================= */
 function uploadExcel() {
-
     const file = document.getElementById("excelFile").files[0];
+
+console.log(file);
 
     if (!file) return alert("Select file");
 
