@@ -291,3 +291,38 @@ function openReels(videoIndex){
     );
 
 }
+/* =========================
+   REELS VIEWER
+========================= */
+
+function openReels(index){
+
+    const viewer =
+    document.getElementById("reelsViewer");
+
+    viewer.style.display = "block";
+
+    document.body.style.overflow = "hidden";
+
+    const container =
+    document.querySelector(".reels-container");
+
+    container.scrollTo({
+
+        top:index * window.innerHeight,
+
+        behavior:"smooth"
+
+    });
+
+}
+
+function closeReels(){
+
+    document.getElementById(
+        "reelsViewer"
+    ).style.display = "none";
+
+    document.body.style.overflow = "auto";
+
+}
