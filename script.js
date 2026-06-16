@@ -157,6 +157,8 @@ WhatsApp Order
 
 }
 
+
+
 /* ===================================
    HOMEPAGE FEATURED PRODUCTS
 =================================== */
@@ -168,65 +170,71 @@ if(featuredProducts){
 
 featuredProducts.innerHTML = "";
 
-let usedCategories = [];
+let displayProducts = [...products];
 
-let selectedProducts = [];
+/* If more than 20 products,
+   rotate hourly */
 
-products.forEach(product => {
+if(products.length > 20){
 
-const category =
-(product.Category || product.category || "")
-.toLowerCase();
+    const hour =
+    new Date().getHours();
 
-if(
-!usedCategories.includes(category)
-&& selectedProducts.length < 6
-){
+    const startIndex =
+    (hour * 20) % products.length;
 
-selectedProducts.push(product);
+    displayProducts = [];
 
-usedCategories.push(category);
+    for(let i=0;i<20;i++){
+
+        const index =
+        (startIndex + i) % products.length;
+
+        displayProducts.push(
+            products[index]
+        );
+
+    }
 
 }
 
-});
+displayProducts.forEach(product => {
 
-selectedProducts.forEach(product => {
+    const name =
+    product.Name || product.name || "Product";
 
-const name =
-product.Name || product.name;
+    const price =
+    product.Price || product.price || "Contact Us";
 
-const price =
-product.Price || product.price;
+    const image =
+    product.Image || product.image ||
+    "https://via.placeholder.com/300x250";
 
-const image =
-product.Image || product.image;
+    featuredProducts.innerHTML += `
 
-featuredProducts.innerHTML += `
+    <div class="product-card">
 
-<div class="product-card">
+        <img
+        src="${image}"
+        alt="${name}"
+        onerror="this.src='https://via.placeholder.com/300x250?text=No+Image'">
 
-<img
-src="${image}"
-alt="${name}"
-onerror="this.src='https://via.placeholder.com/300x250?text=No+Image'">
+        <h3>${name}</h3>
 
-<h3>${name}</h3>
+        <p>${price}</p>
 
-<p>${price}</p>
+        <a
+        href="https://wa.me/263784324361?text=Hello Benike Technologies, I would like to order ${encodeURIComponent(name)}"
+        class="buy-btn"
+        target="_blank">
 
-<a
-href="https://wa.me/263784324361?text=Hello Benike Technologies, I would like to order ${encodeURIComponent(name)}"
-class="buy-btn"
-target="_blank">
+            WhatsApp Order
 
-WhatsApp Order
+        </a>
 
-</a>
+    </div>
 
-</div>
-
-`;
+    `;
 
 });
 
