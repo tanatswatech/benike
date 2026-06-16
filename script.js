@@ -271,3 +271,23 @@ dots[current].classList.add("active-dot");
 },5000);
 
 }
+function openReels(videoIndex){
+
+    const videos = [
+
+        "https://www.youtube.com/embed/-voejkpMp-g?autoplay=1&mute=1",
+
+        "https://www.youtube.com/embed/kqCOKYM0fyU?autoplay=1&mute=1",
+
+        "https://www.youtube.com/embed/ZU9KL10gBNA?autoplay=1&mute=1",
+
+        "https://www.youtube.com/embed/1llWP_8Y5YI?autoplay=1&mute=1"
+
+    ];
+
+    window.open(
+        videos[videoIndex],
+        "_blank"
+    );
+
+}
