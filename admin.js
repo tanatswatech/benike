@@ -1,5 +1,8 @@
 let products = JSON.parse(localStorage.getItem("products")) || [];
 
+/* =========================
+   SAVE PRODUCTS
+========================= */
 function save() {
     localStorage.setItem("products", JSON.stringify(products));
 }
@@ -10,14 +13,13 @@ function save() {
 function showTab(tab) {
 
     document.querySelectorAll(".tab")
-    .forEach(t => t.classList.remove("active"));
+        .forEach(t => t.classList.remove("active"));
 
     document.getElementById(tab).classList.add("active");
-
 }
 
 /* =========================
-   LOAD DASHBOARD STATS
+   DASHBOARD
 ========================= */
 function loadDashboard() {
 
@@ -25,140 +27,220 @@ function loadDashboard() {
 
     document.getElementById("totalProducts").innerText = products.length;
 
-    const categories = [...new Set(products.map(p => p.Category))];
+    const categories = [
+        ...new Set(
+            products
+            .map(p => p.Category)
+            .filter(Boolean)
+        )
+    ];
 
-    document.getElementById("totalCategories").innerText = categories.length;
+    document.getElementById("totalCategories").innerText =
+        categories.length;
 
-    /* TOP CATEGORY */
     let count = {};
 
     products.forEach(p => {
-        count[p.Category] = (count[p.Category] || 0) + 1;
+
+        const cat = p.Category || "Uncategorized";
+
+        count[cat] = (count[cat] || 0) + 1;
+
     });
 
-    let top = Object.keys(count).reduce((a,b)=>
-        count[a] > count[b] ? a : b
-    , "-");
+    let top = "None";
+
+    if (Object.keys(count).length > 0) {
+
+        top = Object.keys(count).reduce((a, b) =>
+            count[a] > count[b] ? a : b
+        );
+
+    }
 
     document.getElementById("topCategory").innerText = top;
-
 }
 
 /* =========================
-   SHOW PRODUCTS (REAL)
+   PRODUCTS
 ========================= */
 function loadProducts() {
 
     let box = document.getElementById("productList");
 
+    if (!box) return;
+
     box.innerHTML = "";
 
-    products.forEach((p,i)=>{
+    products.forEach(p => {
 
         box.innerHTML += `
+
         <div class="item">
 
-            <img src="${p.Image}" width="80">
+            <img
+                src="${p.Image || 'https://via.placeholder.com/100x100?text=No+Image'}"
+                width="80"
+                onerror="this.src='https://via.placeholder.com/100x100?text=No+Image'">
 
             <div>
-                <h3>${p.Name}</h3>
-                <p>$${p.Price}</p>
-                <small>${p.Category}</small>
+
+                <h3>${p.Name || "No Name"}</h3>
+
+                <p>$${p.Price || "Contact Us"}</p>
+
+                <small>${p.Category || "Uncategorized"}</small>
+
             </div>
 
         </div>
+
         `;
 
     });
-
 }
 
 /* =========================
-   SHOW CATEGORIES (REAL)
+   CATEGORIES
 ========================= */
 function loadCategories() {
 
     let box = document.getElementById("categoryList");
 
+    if (!box) return;
+
     let groups = {};
 
-    products.forEach(p=>{
-        groups[p.Category] = (groups[p.Category] || 0) + 1;
+    products.forEach(p => {
+
+        const cat =
+            p.Category || "Uncategorized";
+
+        groups[cat] =
+            (groups[cat] || 0) + 1;
+
     });
 
     box.innerHTML = "";
 
-    for(let c in groups){
+    for (let c in groups) {
 
         box.innerHTML += `
+
         <div class="cat-item">
+
             <h3>${c}</h3>
+
             <p>${groups[c]} products</p>
+
         </div>
+
         `;
-
     }
-
 }
 
 /* =========================
-   ANALYTICS (DEMO REAL DATA)
+   ANALYTICS
 ========================= */
 function loadAnalytics() {
 
-    let box = document.getElementById("analyticsBox");
+    let box =
+        document.getElementById("analyticsBox");
+
+    if (!box) return;
 
     let total = products.length;
 
-    let cats = [...new Set(products.map(p=>p.Category))];
+    let cats = [
+        ...new Set(
+            products
+            .map(p => p.Category)
+            .filter(Boolean)
+        )
+    ];
 
     box.innerHTML = `
-        <h3>Total Products: ${total}</h3>
-        <h3>Total Categories: ${cats.length}</h3>
-    `;
 
+        <h3>Total Products: ${total}</h3>
+
+        <h3>Total Categories: ${cats.length}</h3>
+
+    `;
 }
 
 /* =========================
-   EXCEL UPLOAD (REAL IMPORT)
+   IMPORT EXCEL
 ========================= */
 function uploadExcel() {
-    const file = document.getElementById("excelFile").files[0];
 
-console.log(file);
+    const file =
+        document.getElementById("excelFile").files[0];
 
-    if (!file) return alert("Select file");
+    if (!file) {
+
+        alert("Please select an Excel file");
+
+        return;
+    }
 
     const reader = new FileReader();
 
-    reader.onload = function(e) {
+    reader.onload = function (e) {
 
-        const data = new Uint8Array(e.target.result);
+        try {
 
-        const workbook = XLSX.read(data, { type: "array" });
+            const data =
+                new Uint8Array(e.target.result);
 
-        const sheet = workbook.Sheets[workbook.SheetNames[0]];
+            const workbook =
+                XLSX.read(data, {
+                    type: "array"
+                });
 
-        products = XLSX.utils.sheet_to_json(sheet, { defval: "" });
+            const sheet =
+                workbook.Sheets[
+                    workbook.SheetNames[0]
+                ];
 
-        save();
+            products =
+                XLSX.utils.sheet_to_json(
+                    sheet,
+                    {
+                        defval: ""
+                    }
+                );
 
-        alert("Imported " + products.length + " products");
+            console.log(products);
 
-        loadDashboard();
-        loadProducts();
-        loadCategories();
-        loadAnalytics();
+            save();
 
+            alert(
+                products.length +
+                " products imported successfully"
+            );
+
+            loadDashboard();
+            loadProducts();
+            loadCategories();
+            loadAnalytics();
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert(
+                "Failed to import Excel file."
+            );
+        }
     };
 
     reader.readAsArrayBuffer(file);
-
 }
 
 /* =========================
    INIT
 ========================= */
+
 loadDashboard();
 loadProducts();
 loadCategories();
