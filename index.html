@@ -338,108 +338,144 @@ onclick="openReels(3)">
 </footer>
 <script>
 
-let slides = document.querySelectorAll(".slide");
-let dots = document.querySelectorAll(".dot");
-
-let current = 0;
-
-setInterval(() => {
-
-    slides[current].classList.remove("active");
-    dots[current].classList.remove("active-dot");
-
-    current++;
-
-    if(current >= slides.length){
-        current = 0;
-    }
-
-    slides[current].classList.add("active");
-    dots[current].classList.add("active-dot");
-
-},5000);
-
-</script>
-    <script>
-
-/* HERO SLIDER */
+/* =========================
+   HERO SLIDER
+========================= */
 
 let slides = document.querySelectorAll(".slide");
 let dots = document.querySelectorAll(".dot");
 
 let current = 0;
 
+if(slides.length > 0){
+
 setInterval(() => {
 
     slides[current].classList.remove("active");
-    dots[current].classList.remove("active-dot");
+
+    if(dots[current]){
+        dots[current].classList.remove("active-dot");
+    }
+
 
     current++;
+
 
     if(current >= slides.length){
         current = 0;
     }
 
+
     slides[current].classList.add("active");
-    dots[current].classList.add("active-dot");
+
+
+    if(dots[current]){
+        dots[current].classList.add("active-dot");
+    }
+
 
 },5000);
 
-
-/* FEATURED PRODUCTS */
-
+}
 
 
-const products =
-JSON.parse(localStorage.getItem("products")) || [];
 
-const featured =
-document.getElementById("featuredProducts");
+/* =========================
+   FEATURED PRODUCTS
+========================= */
 
-let usedCategories = [];
 
-let selected = [];
+const featured = document.getElementById("featuredProducts");
 
-products.forEach(product => {
 
-    if(
-        !usedCategories.includes(product.Category)
-        && selected.length < 6
-    ){
-        selected.push(product);
-        usedCategories.push(product.Category);
-    }
+if(featured){
+
+
+const products = JSON.parse(localStorage.getItem("products")) || [];
+
+
+// Show latest uploaded products first
+const selectedProducts = products
+.slice(-6)
+.reverse();
+
+
+
+if(selectedProducts.length === 0){
+
+
+featured.innerHTML = `
+
+<p style="text-align:center;width:100%;">
+No products uploaded yet.
+</p>
+
+`;
+
+
+}
+
+
+
+selectedProducts.forEach(product => {
+
+
+featured.innerHTML += `
+
+<div class="product-card">
+
+
+<img
+
+src="${product.Image || product.image}"
+
+alt="${product.Name || product.name}"
+
+onerror="this.src='https://via.placeholder.com/300x250?text=No+Image'"
+
+>
+
+
+<h3>
+
+${product.Name || product.name}
+
+</h3>
+
+
+<p>
+
+${
+product.Price ||
+product.price ||
+"Contact Us"
+
+}
+
+</p>
+
+
+<a
+
+href="https://wa.me/263784324361?text=Hello Benike Technologies, I would like to order ${product.Name || product.name}"
+
+class="buy-btn">
+
+WhatsApp Order
+
+</a>
+
+
+</div>
+
+`;
+
 
 });
 
-selected.forEach(product => {
 
-    featured.innerHTML += `
+}
 
-    <div class="product-card">
-
-        <img
-        src="${product.Image}"
-        alt="${product.Name}"
-        onerror="this.src='https://via.placeholder.com/300x250?text=No+Image'">
-
-        <h3>${product.Name}</h3>
-
-        <p>$${product.Price}</p>
-
-        <a
-        href="https://wa.me/263784324361?text=Hello Benike Technologies, I would like to order ${product.Name}"
-        class="buy-btn">
-
-            WhatsApp Order
-
-        </a>
-
-    </div>
-
-    `;
-
-});
 
 </script>
     <!-- REELS VIEWER -->
