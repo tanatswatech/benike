@@ -338,56 +338,58 @@ setInterval(() => {
 
 /* FEATURED PRODUCTS */
 
+
+
 const products =
 JSON.parse(localStorage.getItem("products")) || [];
 
 const featured =
 document.getElementById("featuredProducts");
 
-if(products.length > 0){
+let usedCategories = [];
 
-    products.slice(0,6).forEach(product => {
+let selected = [];
 
-        featured.innerHTML += `
+products.forEach(product => {
 
-        <div class="product-card">
+    if(
+        !usedCategories.includes(product.Category)
+        && selected.length < 6
+    ){
+        selected.push(product);
+        usedCategories.push(product.Category);
+    }
 
-            <img
-            src="${product.Image}"
-            alt="${product.Name}"
-            onerror="this.src='https://via.placeholder.com/300x250?text=No+Image'">
+});
 
-            <h3>${product.Name}</h3>
+selected.forEach(product => {
 
-            <p>$${product.Price}</p>
+    featured.innerHTML += `
 
-            <a
-            href="https://wa.me/263784324361?text=Hello Benike Technologies, I would like to order ${product.Name}"
-            class="buy-btn">
+    <div class="product-card">
 
-                WhatsApp Order
+        <img
+        src="${product.Image}"
+        alt="${product.Name}"
+        onerror="this.src='https://via.placeholder.com/300x250?text=No+Image'">
 
-            </a>
+        <h3>${product.Name}</h3>
 
-        </div>
+        <p>$${product.Price}</p>
 
-        `;
+        <a
+        href="https://wa.me/263784324361?text=Hello Benike Technologies, I would like to order ${product.Name}"
+        class="buy-btn">
 
-    });
+            WhatsApp Order
 
-}else{
-
-    featured.innerHTML = `
-
-    <div style="width:100%;text-align:center;padding:40px;">
-
-        No products uploaded yet.
+        </a>
 
     </div>
 
     `;
 
-}
+});
 
 </script>
 </body>
