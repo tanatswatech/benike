@@ -634,3 +634,36 @@ justify-content:center;
 }
 
 }
+/* =========================
+HEADER BRAND FIX
+========================= */
+
+.logo{
+display:flex;
+align-items:center;
+gap:12px;
+cursor:pointer;
+}
+
+.logo img{
+height:55px;
+width:auto;
+}
+
+.logo-text h2{
+font-size:16px;
+color:white;
+letter-spacing:1px;
+margin:0;
+}
+
+.logo-text span{
+font-size:12px;
+color:#aaa;
+}
+
+/* hover effect */
+.logo:hover h2{
+color:#ff2020;
+transition:0.3s;
+}
