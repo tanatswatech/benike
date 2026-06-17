@@ -32,25 +32,36 @@ header{
     border-bottom:2px solid #ff0000;
 }
 
-.logo img{
-    height:100px;
-}
-
-nav ul{
+.logo{
     display:flex;
-    gap:30px;
-    list-style:none;
+    align-items:center;
+    gap:15px;
 }
 
-nav a{
+.logo img{
+    height:70px;
+    width:auto;
+}
+
+.logo-text{
+    display:flex;
+    flex-direction:column;
+}
+
+.logo-text h2{
     color:white;
-    text-decoration:none;
-    font-weight:500;
-    transition:.3s;
+    font-size:24px;
+    font-weight:700;
+    letter-spacing:1px;
+    line-height:1;
 }
 
-nav a:hover{
+.logo-text span{
     color:#ff0000;
+    font-size:12px;
+    letter-spacing:4px;
+    margin-top:6px;
+    text-transform:uppercase;
 }
 
 /* HERO */
