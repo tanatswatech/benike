@@ -668,3 +668,40 @@ transition:0.5s;
 .buy-btn:hover::before{
 left:100%;
 }
+/* =========================
+CUSTOM CATEGORY SCROLLBAR (PREMIUM LOOK)
+========================= */
+
+.header-categories{
+scrollbar-width: thin;              /* Firefox */
+scrollbar-color: #ff2020 transparent;
+}
+
+/* Chrome / Edge / Safari */
+.header-categories::-webkit-scrollbar{
+height:4px;
+}
+
+.header-categories::-webkit-scrollbar-track{
+background:transparent;
+}
+
+.header-categories::-webkit-scrollbar-thumb{
+background:linear-gradient(90deg, #ff2020, #ff5a5a);
+border-radius:50px;
+transition:0.3s;
+}
+
+.header-categories::-webkit-scrollbar-thumb:hover{
+background:linear-gradient(90deg, #ff5a5a, #ff2020);
+}
+
+/* Optional: hide scrollbar until hover (clean UI) */
+.header-categories::-webkit-scrollbar{
+opacity:0;
+transition:0.3s;
+}
+
+.header-categories:hover::-webkit-scrollbar{
+opacity:1;
+}
