@@ -2,41 +2,47 @@
 HERO SLIDER
 ========================= */
 
+document.addEventListener("DOMContentLoaded", function () {
+
 let slides = document.querySelectorAll(".slide");
 let dots = document.querySelectorAll(".dot");
 
 let current = 0;
 
+// safety check
+if (slides.length === 0) return;
+
 function showSlide(index){
 
     slides.forEach((slide, i) => {
         slide.classList.remove("active");
-        if(dots[i]) dots[i].classList.remove("active-dot");
+        if (dots[i]) dots[i].classList.remove("active-dot");
     });
 
-    if(slides[index]) slides[index].classList.add("active");
-    if(dots[index]) dots[index].classList.add("active-dot");
+    if (slides[index]) slides[index].classList.add("active");
+    if (dots[index]) dots[index].classList.add("active-dot");
 
 }
 
-if(slides.length > 0){
+function nextSlide(){
+
+    current++;
+
+    if (current >= slides.length) {
+        current = 0;
+    }
 
     showSlide(current);
 
-    setInterval(() => {
-
-        current++;
-
-        if(current >= slides.length){
-            current = 0;
-        }
-
-        showSlide(current);
-
-    }, 5000);
-
 }
 
+// initialize
+showSlide(current);
+
+// auto slide
+setInterval(nextSlide, 5000);
+
+});
 /* =========================
 SEARCH (SAFE - NO CRASH)
 ========================= */
