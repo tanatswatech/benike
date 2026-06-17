@@ -1,1 +1,109 @@
+/* PAGE TITLE */
 
+#pageTitle{
+text-align:center;
+font-size:40px;
+margin:40px 0;
+}
+
+/* CATEGORY BAR */
+
+.product-categories{
+display:grid;
+grid-template-columns:repeat(7,1fr);
+gap:15px;
+padding:30px 5%;
+}
+
+.cat-pill{
+background:#111;
+border-radius:15px;
+overflow:hidden;
+transition:.3s;
+text-align:center;
+}
+
+.cat-pill:hover{
+transform:translateY(-5px);
+}
+
+.cat-pill img{
+width:100%;
+height:120px;
+object-fit:cover;
+}
+
+.cat-pill span{
+display:block;
+padding:12px;
+color:white;
+font-weight:600;
+}
+
+/* PRODUCTS */
+
+.product-grid{
+padding:40px 5%;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:25px;
+}
+
+.product-card{
+background:#111;
+border-radius:15px;
+overflow:hidden;
+transition:.3s;
+}
+
+.product-card:hover{
+transform:translateY(-5px);
+}
+
+.product-card img{
+width:100%;
+height:250px;
+object-fit:cover;
+}
+
+.product-card h3{
+padding:15px;
+}
+
+.product-card p{
+padding:0 15px;
+color:#ff0000;
+font-weight:bold;
+}
+
+.buy-btn{
+display:block;
+margin:15px;
+padding:12px;
+background:#ff0000;
+color:white;
+text-align:center;
+border-radius:8px;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1100px){
+
+.product-categories{
+grid-template-columns:repeat(3,1fr);
+}
+
+}
+
+@media(max-width:768px){
+
+.product-categories{
+grid-template-columns:repeat(2,1fr);
+}
+
+#pageTitle{
+font-size:28px;
+}
+
+}
