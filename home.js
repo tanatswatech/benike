@@ -212,3 +212,8 @@ if(input === ADMIN_PASSWORD){
 }
 
 }
+if(brandLogo){
+
+brandLogo.addEventListener("dblclick", openAdmin);
+
+}
