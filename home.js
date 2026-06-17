@@ -1,59 +1,52 @@
 /* =========================
-HERO SLIDER
+HERO SLIDER (FIXED + STABLE)
 ========================= */
 
 document.addEventListener("DOMContentLoaded", function () {
 
-let slides = document.querySelectorAll(".slide");
-let dots = document.querySelectorAll(".dot");
+    let slides = document.querySelectorAll(".slide");
+    let dots = document.querySelectorAll(".dot");
 
-let current = 0;
+    let current = 0;
 
-// safety check
-if (slides.length === 0) return;
+    if (slides.length === 0) return;
 
-function showSlide(index){
+    function showSlide(index) {
 
-    slides.forEach((slide, i) => {
-        slide.classList.remove("active");
-        if (dots[i]) dots[i].classList.remove("active-dot");
-    });
+        slides.forEach((slide, i) => {
+            slide.classList.remove("active");
+            if (dots[i]) dots[i].classList.remove("active-dot");
+        });
 
-    if (slides[index]) slides[index].classList.add("active");
-    if (dots[index]) dots[index].classList.add("active-dot");
-
-}
-
-function nextSlide(){
-
-    current++;
-
-    if (current >= slides.length) {
-        current = 0;
+        if (slides[index]) slides[index].classList.add("active");
+        if (dots[index]) dots[index].classList.add("active-dot");
     }
 
+    function nextSlide() {
+        current = (current + 1) % slides.length;
+        showSlide(current);
+    }
+
+    // init
     showSlide(current);
 
-}
-
-// initialize
-showSlide(current);
-
-// auto slide
-setInterval(nextSlide, 5000);
+    // safe interval (avoid multiple intervals stacking)
+    setInterval(nextSlide, 5000);
 
 });
+
+
 /* =========================
-SEARCH (SAFE - NO CRASH)
+SEARCH (SAFE + WORKING)
 ========================= */
 
-function searchProducts(event){
+function searchProducts(event) {
 
-    if(event.key !== "Enter") return;
+    if (event.key !== "Enter") return;
 
     const input = event.target.value.trim().toLowerCase();
 
-    if(!input) return;
+    if (!input) return;
 
     const products = JSON.parse(localStorage.getItem("products")) || [];
 
@@ -68,29 +61,27 @@ function searchProducts(event){
             category.includes(input) ||
             specs.includes(input)
         );
-
     });
 
     localStorage.setItem("searchResults", JSON.stringify(results));
 
     window.location.href = "products.html?search=active";
-
 }
 
+
 /* =========================
-FEATURED PRODUCTS
+FEATURED PRODUCTS (SAFE)
 ========================= */
 
 const featured = document.getElementById("featuredProducts");
 
-if(featured){
+if (featured) {
 
     const products = JSON.parse(localStorage.getItem("products")) || [];
 
-    // Take last 6 products safely
     const latestProducts = products.slice(-6).reverse();
 
-    if(latestProducts.length === 0){
+    if (latestProducts.length === 0) {
 
         featured.innerHTML = `
             <p style="text-align:center;width:100%;color:#aaa;">
@@ -112,8 +103,7 @@ if(featured){
                     <img
                         src="${image}"
                         alt="${name}"
-                        onerror="this.src='https://via.placeholder.com/300x250?text=No+Image'"
-                    >
+                        onerror="this.src='https://via.placeholder.com/300x250?text=No+Image'">
 
                     <h3>${name}</h3>
 
@@ -122,104 +112,100 @@ if(featured){
                     <a
                         href="https://wa.me/263784324361?text=Hello Benike Technologies, I would like to order ${encodeURIComponent(name)}"
                         class="buy-btn"
-                        target="_blank"
-                    >
+                        target="_blank">
                         WhatsApp Order
                     </a>
 
                 </div>
             `;
-
         });
-
     }
-
 }
+
 
 /* =========================
 REELS CONTROL
 ========================= */
 
-function openReels(index){
+function openReels(index = 0) {
 
     const viewer = document.getElementById("reelsViewer");
 
-    if(viewer){
-        viewer.style.display = "block";
-    }
+    if (viewer) viewer.style.display = "block";
 
-    // optional: scroll to selected reel
     const reels = document.querySelectorAll(".reel");
 
-    if(reels[index]){
-        reels[index].scrollIntoView({ behavior: "smooth" });
-    }
-
+    reels.forEach((r, i) => {
+        r.style.display = i === index ? "block" : "none";
+    });
 }
 
-function closeReels(){
+function closeReels() {
 
     const viewer = document.getElementById("reelsViewer");
 
-    if(viewer){
-        viewer.style.display = "none";
-    }
-
+    if (viewer) viewer.style.display = "none";
 }
+
 
 /* =========================
-GLOBAL SAFETY: PREVENT ERRORS
+ADMIN SYSTEM (FIXED - NO DUPLICATES)
 ========================= */
 
-window.addEventListener("error", function(e){
+const ADMIN_PASSWORD = "benike123";
+
+const brandLogo =
+    document.querySelector(".logo"); // FIX: use class, not missing ID
+
+if (brandLogo) {
+
+    brandLogo.addEventListener("dblclick", function () {
+
+        const input = prompt("Enter Admin Password:");
+
+        if (input === null) return;
+
+        if (input === ADMIN_PASSWORD) {
+            window.location.href = "admin.html";
+        } else {
+            alert("❌ Incorrect password. Access denied.");
+        }
+    });
+
+    // backup trigger (5 clicks)
+    let clicks = 0;
+    let timer;
+
+    brandLogo.addEventListener("click", function () {
+
+        clicks++;
+
+        clearTimeout(timer);
+
+        timer = setTimeout(() => {
+            clicks = 0;
+        }, 800);
+
+        if (clicks >= 5) {
+
+            const input = prompt("Admin Password:");
+
+            if (input === ADMIN_PASSWORD) {
+                window.location.href = "admin.html";
+            } else {
+                alert("❌ Wrong password");
+            }
+
+            clicks = 0;
+        }
+    });
+}
+
+
+/* =========================
+GLOBAL ERROR SAFETY
+========================= */
+
+window.addEventListener("error", function (e) {
     console.log("Handled error:", e.message);
 });
-
-const brandLogo = document.getElementById("brandLogo");
-
-// CHANGE THIS PASSWORD
-const ADMIN_PASSWORD = "benike123";
-
-if(brandLogo){
-
-brandLogo.addEventListener("dblclick", function(){
-
-const input = prompt("Enter Admin Password:");
-
-if(input === null) return; // cancelled
-
-if(input === ADMIN_PASSWORD){
-    window.location.href = "admin.html";
-} else {
-    alert("❌ Incorrect password. Access denied.");
-}
-
-});
-
-}
-const ADMIN_PASSWORD = "benike123";
-
-function openAdmin(){
-    document.getElementById("adminModal").style.display = "flex";
-}
-
-function closeAdmin(){
-    document.getElementById("adminModal").style.display = "none";
-}
-
-function checkAdmin(){
-
-const input = document.getElementById("adminPassword").value;
-
-if(input === ADMIN_PASSWORD){
-    window.location.href = "admin.html";
-} else {
-    alert("❌ Wrong password");
-}
-
-}
-if(brandLogo){
-
-brandLogo.addEventListener("dblclick", openAdmin);
-
-}
