@@ -194,24 +194,11 @@ WhatsApp Order
 
 
 </script>
-        <div id="productModal" class="product-modal">
+        
+        <script src="products.js"></script>
+        <!-- PRODUCT MODAL -->
 
-    <div class="modal-content">
-
-        <span class="close-modal" onclick="closeProduct()">
-
-            &times;
-
-        </span>
-
-        <div id="modalBody"></div>
-
-    </div>
-
-</div>
-        <script src="products.js"></script><!-- PRODUCT VIEW MODAL -->
-
-<div class="product-modal" id="productModal">
+<div id="productModal" class="product-modal">
 
     <span
     class="close-modal"
@@ -225,11 +212,22 @@ WhatsApp Order
 
         <div class="modal-image">
 
-            <img id="modalImage">
+            <img
+            id="modalImage"
+            src="">
 
         </div>
 
         <div class="modal-details">
+
+            <div
+            id="modalCategory"
+            style="
+            color:#ff2020;
+            font-weight:600;
+            margin-bottom:10px;
+            ">
+            </div>
 
             <h2 id="modalTitle"></h2>
 
@@ -238,9 +236,23 @@ WhatsApp Order
             id="modalPrice">
             </div>
 
+            <p style="line-height:1.8">
+
+                Genuine product available from
+                Benike Technologies.
+
+                Fast support, warranty options,
+                and nationwide delivery available.
+
+            </p>
+
             <a
             href="https://wa.me/263784324361"
-            class="buy-btn">
+            class="buy-btn"
+            style="
+            display:inline-block;
+            margin-top:20px;
+            ">
 
                 WhatsApp Order
 
