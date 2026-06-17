@@ -120,7 +120,7 @@ class="buy-btn"
 target="_blank"
 href="https://wa.me/263784324361?text=Hello Benike Technologies, I would like to order ${encodeURIComponent(name)}">
 
-Order
+<i class="fab fa-whatsapp"></i> Order
 
 </a>
 
