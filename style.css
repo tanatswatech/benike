@@ -1019,3 +1019,36 @@ footer{
     background:white;
     color:black;
 }
+nav ul{
+    display:flex;
+    gap:15px;
+    list-style:none;
+}
+
+nav ul li a{
+    text-decoration:none;
+    color:white;
+    padding:12px 22px;
+    border-radius:12px;
+
+    background:rgba(255,255,255,.05);
+
+    backdrop-filter:blur(10px);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    transition:.3s;
+}
+
+nav ul li a:hover{
+
+    background:#ff0000;
+
+    transform:translateY(-3px);
+
+    box-shadow:0 0 20px rgba(255,0,0,.5);
+}
+.active{
+    background:#ff0000 !important;
+    color:white !important;
+}
