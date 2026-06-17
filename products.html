@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
 <meta charset="UTF-8">
@@ -9,12 +10,15 @@
 
 <link rel="stylesheet" href="global.css">
 <link rel="stylesheet" href="products.css">
+
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 </head>
 
 <body>
+
+<!-- HEADER -->
 <header class="main-header">
 
     <div class="header-top">
@@ -34,6 +38,18 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
     </div>
 
+    <!-- SEARCH BOX -->
+    <div class="header-top" style="justify-content:center;">
+        <div class="search-box">
+            <input 
+                type="text" 
+                id="productSearch" 
+                placeholder="Search products...">
+            <i class="fas fa-search"></i>
+        </div>
+    </div>
+
+    <!-- CATEGORY BAR -->
     <div class="header-categories">
 
         <a href="products.html?category=phones" class="header-category">
@@ -42,7 +58,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         </a>
 
         <a href="products.html?category=laptops" class="header-category">
-            <img src="https://img.freepik.com/premium-photo/red-laptop-computer-with-geometric-abstract-design-screen-against-red-background-laptop-screen-red-background_939992-11163.jpg?w=360">
+            <img src="https://img.freepik.com/premium-photo/red-laptop-computer-with-geometric-abstract-design-screen-against-red-background_939992-11163.jpg?w=360">
             <span>Laptops</span>
         </a>
 
@@ -70,192 +86,40 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
 </header>
 
+<!-- PRODUCTS GRID -->
+<div class="product-grid" id="productsContainer"></div>
 
-    <div class="product-grid" id="productsContainer">
-
-<script>
-
-const products = JSON.parse(localStorage.getItem("products")) || [];
-
-const container = document.getElementById("productsContainer");
-
-const params = new URLSearchParams(window.location.search);
-
-const selectedCategory = params.get("category");
-
-
-let filteredProducts = products;
-
-
-// CATEGORY FILTER
-if (selectedCategory) {
-
-    filteredProducts = products.filter(product => {
-
-        const productCategory =
-            product.Category ||
-            product.category ||
-            product.CATEGORY ||
-            "";
-
-        return productCategory.toLowerCase() === 
-        selectedCategory.toLowerCase();
-
-    });
-
-}
-
-
-
-// IF NOTHING FOUND
-if(filteredProducts.length === 0){
-
-    container.innerHTML = `
-
-    <div style="
-        text-align:center;
-        width:100%;
-        padding:50px;
-        font-size:20px;
-    ">
-
-        No products found in ${selectedCategory || "this category"}.
-
-    </div>
-
-    `;
-
-}
-
-
-
-// DISPLAY PRODUCTS
-
-filteredProducts.forEach(product => {
-
-
-container.innerHTML += `
-
-<div class="product-card">
-
-
-<img
-
-src="${product.Image || product.image}"
-
-alt="${product.Name || product.name}"
-
-onerror="this.src='https://via.placeholder.com/300x250?text=No+Image'"
-
->
-
-
-<h3>
-
-${product.Name || product.name}
-
-</h3>
-
-
-<p>
-
-${
-product.Price ||
-product.price ||
-product.Cost ||
-product.cost ||
-"Contact Us"
-
-}
-
-</p>
-
-
-
-<a
-
-href="https://wa.me/263784324361?text=Hello Benike Technologies, I would like to order ${product.Name || product.name}"
-
-class="buy-btn"
-
->
-
-WhatsApp Order
-
-</a>
-
-
-</div>
-
-
-`;
-
-});
-
-
-</script>
-        
-        <script src="products.js"></script>
-        <!-- PRODUCT MODAL -->
-
+<!-- PRODUCT MODAL -->
 <div id="productModal" class="product-modal">
 
-    <span
-    class="close-modal"
-    onclick="closeProduct()">
-
-        &times;
-
-    </span>
+    <span class="close-modal" onclick="closeProduct()">&times;</span>
 
     <div class="modal-content">
 
         <div class="modal-image">
-
-            <img
-            id="modalImage"
-            src="">
-
+            <img id="modalImage" src="">
         </div>
 
         <div class="modal-details">
 
-            <div
-            id="modalCategory"
-            style="
-            color:#ff2020;
-            font-weight:600;
-            margin-bottom:10px;
-            ">
-            </div>
+            <div id="modalCategory"></div>
 
             <h2 id="modalTitle"></h2>
 
-            <div
-            class="modal-price"
-            id="modalPrice">
+            <div class="modal-price" id="modalPrice"></div>
+
+            <div class="product-id-box">
+                Product ID: <span id="modalProductId"></span>
             </div>
 
-            <p style="line-height:1.8">
+            <div class="modal-specs" id="modalSpecs"></div>
 
-                Genuine product available from
-                Benike Technologies.
-
-                Fast support, warranty options,
-                and nationwide delivery available.
-
-            </p>
-
-            <a
-            href="https://wa.me/263784324361"
-            class="buy-btn"
-            style="
-            display:inline-block;
-            margin-top:20px;
-            ">
-
+            <a 
+                id="modalWhatsapp"
+                class="buy-btn"
+                target="_blank"
+                style="display:inline-block; margin-top:20px;">
                 WhatsApp Order
-
             </a>
 
         </div>
@@ -263,8 +127,54 @@ WhatsApp Order
     </div>
 
 </div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+
+    <div class="footer-container">
+
+        <div class="footer-about">
+            <h3>Benike Technologies</h3>
+            <p>
+                Your trusted source for phones, laptops, gaming gear,
+                accessories, and Starlink solutions across Zimbabwe.
+            </p>
+        </div>
+
+        <div class="footer-links">
+            <h4>Quick Links</h4>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-contact">
+            <h4>Contact</h4>
+            <p><i class="fas fa-phone"></i> +263 784 324 361</p>
+            <p><i class="fas fa-envelope"></i> beniketech@gmail.com</p>
+            <p><i class="fas fa-location-dot"></i> Zimbabwe</p>
+        </div>
+
+        <div class="footer-social">
+            <h4>Follow Us</h4>
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-whatsapp"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        <p>© 2026 Benike Technologies. All Rights Reserved.</p>
+    </div>
+
+</footer>
+
+<!-- JS -->
+<script src="products.js"></script>
+
 </body>
 </html>
-
-
-
