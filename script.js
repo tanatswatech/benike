@@ -376,3 +376,37 @@ searchInput.addEventListener("keyup", function(){
 });
 
 }
+function searchProducts(event){
+
+    if(event.key === "Enter"){
+
+        const value =
+        document
+        .getElementById("searchInput")
+        .value;
+
+        window.location.href =
+        "products.html?search=" +
+        encodeURIComponent(value);
+
+    }
+
+}
+const searchTerm =
+params.get("search");
+
+if(searchTerm){
+
+filteredProducts =
+filteredProducts.filter(product =>
+
+(product.Name || "")
+.toLowerCase()
+.includes(searchTerm.toLowerCase())
+
+);
+
+pageTitle.innerText =
+'Search: "' + searchTerm + '"';
+
+}
