@@ -3,109 +3,193 @@ JSON.parse(localStorage.getItem("products")) || [];
 
 let analytics =
 JSON.parse(localStorage.getItem("analytics")) || {
-visits:0,
-views:{},
-sales:{}
+visits: 0,
+views: {},
+sales: {}
 };
 
-analytics.visits++;
+/* ==========================
+SAVE DATA
+========================== */
 
-localStorage.setItem(
-"analytics",
-JSON.stringify(analytics)
-);
-
-function save(){
-
+function saveProducts(){
 localStorage.setItem(
 "products",
 JSON.stringify(products)
 );
-
 }
+
+function saveAnalytics(){
+localStorage.setItem(
+"analytics",
+JSON.stringify(analytics)
+);
+}
+
+/* ==========================
+VISITS
+========================== */
+
+analytics.visits++;
+saveAnalytics();
+
+/* ==========================
+TABS
+========================== */
 
 function showTab(tab){
 
-document.querySelectorAll(".tab")
-.forEach(t=>t.classList.remove("active"));
+document
+.querySelectorAll(".tab")
+.forEach(t =>
+t.classList.remove("active")
+);
 
-document.getElementById(tab)
+document
+.getElementById(tab)
 .classList.add("active");
 
 }
 
+/* ==========================
+DASHBOARD
+========================== */
+
 function loadDashboard(){
 
 products =
-JSON.parse(localStorage.getItem("products")) || [];
+JSON.parse(
+localStorage.getItem("products")
+) || [];
 
-document.getElementById("totalProducts")
-.innerText = products.length;
+document.getElementById(
+"totalProducts"
+).innerText = products.length;
 
 const categories =
-[...new Set(products.map(
-p=>p.Category
-))];
+[
+...new Set(
+products
+.map(p => p.Category)
+.filter(Boolean)
+)
+];
 
-document.getElementById("totalCategories")
-.innerText = categories.length;
+document.getElementById(
+"totalCategories"
+).innerText = categories.length;
 
-let count={};
+let counts = {};
 
-products.forEach(p=>{
+products.forEach(p => {
 
-count[p.Category] =
-(count[p.Category]||0)+1;
+let cat =
+p.Category || "Uncategorized";
+
+counts[cat] =
+(counts[cat] || 0) + 1;
 
 });
 
-let top="-";
+let top = "None";
 
-if(Object.keys(count).length){
+if(Object.keys(counts).length){
 
 top =
-Object.keys(count)
+Object.keys(counts)
 .reduce((a,b)=>
-count[a]>count[b]?a:b
+counts[a] > counts[b]
+? a
+: b
 );
 
 }
 
-document.getElementById("topCategory")
-.innerText = top;
+document.getElementById(
+"topCategory"
+).innerText = top;
 
 }
+
+/* ==========================
+PRODUCTS
+========================== */
 
 function loadProducts(){
 
 const box =
-document.getElementById("productList");
+document.getElementById(
+"productList"
+);
 
-box.innerHTML="";
+if(!box) return;
+
+box.innerHTML = "";
+
+if(products.length === 0){
+
+box.innerHTML = `
+
+<div style="
+background:#000;
+padding:30px;
+border-radius:15px;
+text-align:center;
+grid-column:1/-1;
+">
+No products uploaded.
+</div>
+`;
+
+return;
+
+}
 
 products.forEach((p,index)=>{
+
+const image =
+p["Image Url"] ||
+p.Image ||
+"https://via.placeholder.com/400x300?text=No+Image";
+
+const price =
+Number(
+String(p.Price || 0)
+.replace("$","")
+);
 
 box.innerHTML += `
 
 <div class="item">
 
-<img src="${p["Image Url"] || p.Image}">
+<img
+src="${image}"
+onerror="this.src='https://via.placeholder.com/400x300?text=No+Image'"
 
-<div>
+>
 
-<h3>${p.Name}</h3>
+<div class="product-content">
 
-<p>$${Number(p.Price).toFixed(2)}</p>
+<h3>
+${p.Name || "Unnamed Product"}
+</h3>
 
-<small>${p.Category}</small>
+<div class="product-price">
+$${price.toFixed(2)}
+</div>
 
-<br>
+<div class="product-category">
+${p.Category || "Uncategorized"}
+</div>
+
+</div>
+
+<div class="product-actions">
 
 <button
 class="delete-btn"
 onclick="deleteProduct(${index})">
-Delete
-</button>
+🗑 Delete </button>
 
 </div>
 
@@ -117,47 +201,73 @@ Delete
 
 }
 
+/* ==========================
+DELETE PRODUCT
+========================== */
+
 function deleteProduct(index){
 
-if(!confirm("Delete product?"))
-return;
+if(
+!confirm(
+"Delete this product?"
+)
+) return;
 
 products.splice(index,1);
 
-save();
+saveProducts();
 
 refresh();
 
 }
+
+/* ==========================
+DELETE ALL
+========================== */
 
 function deleteAllProducts(){
 
-if(!confirm("Delete ALL products?"))
-return;
+if(
+!confirm(
+"Delete ALL products?"
+)
+) return;
 
-products=[];
+products = [];
 
-save();
+saveProducts();
 
 refresh();
 
 }
 
+/* ==========================
+CATEGORIES
+========================== */
+
 function loadCategories(){
 
-let groups={};
+const box =
+document.getElementById(
+"categoryList"
+);
+
+if(!box) return;
+
+let groups = {};
 
 products.forEach(p=>{
 
-groups[p.Category] =
-(groups[p.Category]||0)+1;
+const cat =
+p.Category ||
+"Uncategorized";
+
+groups[cat] =
+(groups[cat] || 0) + 1;
 
 });
 
-const box =
-document.getElementById("categoryList");
-
-box.innerHTML="";
+box.innerHTML = "";
 
 for(let cat in groups){
 
@@ -177,42 +287,71 @@ box.innerHTML += `
 
 }
 
+/* ==========================
+ANALYTICS
+========================== */
+
 function loadAnalytics(){
 
 const box =
-document.getElementById("analyticsBox");
+document.getElementById(
+"analyticsBox"
+);
 
-let mostViewed="None";
-let mostBought="None";
+if(!box) return;
 
-if(Object.keys(analytics.views).length){
+let mostViewed =
+"None";
+
+let mostBought =
+"None";
+
+if(
+Object.keys(
+analytics.views
+).length
+){
 
 mostViewed =
-Object.keys(analytics.views)
+Object.keys(
+analytics.views
+)
 .reduce((a,b)=>
-analytics.views[a]>
+analytics.views[a] >
 analytics.views[b]
-?a:b
+? a
+: b
 );
 
 }
 
-if(Object.keys(analytics.sales).length){
+if(
+Object.keys(
+analytics.sales
+).length
+){
 
 mostBought =
-Object.keys(analytics.sales)
+Object.keys(
+analytics.sales
+)
 .reduce((a,b)=>
-analytics.sales[a]>
+analytics.sales[a] >
 analytics.sales[b]
-?a:b
+? a
+: b
 );
 
 }
 
-let totalViews =
+const totalViews =
 Object.values(
 analytics.views
-).reduce((a,b)=>a+b,0);
+)
+.reduce(
+(a,b)=>a+b,
+0
+);
 
 box.innerHTML = `
 
@@ -221,6 +360,11 @@ box.innerHTML = `
 <div class="analytics-card">
 <h3>Total Visits</h3>
 <p>${analytics.visits}</p>
+</div>
+
+<div class="analytics-card">
+<h3>Total Products</h3>
+<p>${products.length}</p>
 </div>
 
 <div class="analytics-card">
@@ -238,20 +382,19 @@ box.innerHTML = `
 <p>${mostBought}</p>
 </div>
 
-<div class="analytics-card">
-<h3>Total Products</h3>
-<p>${products.length}</p>
-</div>
-
 </div>
 
 `;
 
 }
 
+/* ==========================
+TEMPLATE DOWNLOAD
+========================== */
+
 function downloadTemplate(){
 
-const template = [
+const sample = [
 
 {
 "Product ID":"SKU001",
@@ -265,7 +408,7 @@ const template = [
 ];
 
 const ws =
-XLSX.utils.json_to_sheet(template);
+XLSX.utils.json_to_sheet(sample);
 
 const wb =
 XLSX.utils.book_new();
@@ -283,10 +426,26 @@ wb,
 
 }
 
+/* ==========================
+EXPORT PRODUCTS
+========================== */
+
 function exportProducts(){
 
+if(products.length === 0){
+
+alert(
+"No products available."
+);
+
+return;
+
+}
+
 const ws =
-XLSX.utils.json_to_sheet(products);
+XLSX.utils.json_to_sheet(
+products
+);
 
 const wb =
 XLSX.utils.book_new();
@@ -304,15 +463,23 @@ wb,
 
 }
 
+/* ==========================
+IMPORT EXCEL
+========================== */
+
 function uploadExcel(){
 
 const file =
-document.getElementById("excelFile")
-.files[0];
+document.getElementById(
+"excelFile"
+).files[0];
 
 if(!file){
 
-alert("Select Excel File");
+alert(
+"Please select an Excel file."
+);
+
 return;
 
 }
@@ -320,7 +487,10 @@ return;
 const reader =
 new FileReader();
 
-reader.onload=(e)=>{
+reader.onload =
+function(e){
+
+try{
 
 const data =
 new Uint8Array(
@@ -328,9 +498,12 @@ e.target.result
 );
 
 const workbook =
-XLSX.read(data,{
+XLSX.read(
+data,
+{
 type:"array"
-});
+}
+);
 
 const sheet =
 workbook.Sheets[
@@ -340,7 +513,9 @@ workbook.SheetNames[0]
 products =
 XLSX.utils.sheet_to_json(
 sheet,
-{defval:""}
+{
+defval:""
+}
 );
 
 products =
@@ -349,28 +524,49 @@ products.map(p=>({
 ...p,
 
 Price:Number(
-String(p.Price)
+String(p.Price || 0)
 .replace("$","")
 )
 
 }));
 
-save();
+saveProducts();
 
 refresh();
 
 alert(
-products.length+
-" products imported"
+products.length +
+" products imported successfully."
 );
 
-};
+}catch(err){
 
-reader.readAsArrayBuffer(file);
+console.error(err);
+
+alert(
+"Failed to import Excel file."
+);
 
 }
 
+};
+
+reader.readAsArrayBuffer(
+file
+);
+
+}
+
+/* ==========================
+REFRESH
+========================== */
+
 function refresh(){
+
+products =
+JSON.parse(
+localStorage.getItem("products")
+) || [];
 
 loadDashboard();
 loadProducts();
@@ -378,5 +574,9 @@ loadCategories();
 loadAnalytics();
 
 }
+
+/* ==========================
+INIT
+========================== */
 
 refresh();
