@@ -168,3 +168,47 @@ GLOBAL SAFETY: PREVENT ERRORS
 window.addEventListener("error", function(e){
     console.log("Handled error:", e.message);
 });
+
+const brandLogo = document.getElementById("brandLogo");
+
+// CHANGE THIS PASSWORD
+const ADMIN_PASSWORD = "benike123";
+
+if(brandLogo){
+
+brandLogo.addEventListener("dblclick", function(){
+
+const input = prompt("Enter Admin Password:");
+
+if(input === null) return; // cancelled
+
+if(input === ADMIN_PASSWORD){
+    window.location.href = "admin.html";
+} else {
+    alert("❌ Incorrect password. Access denied.");
+}
+
+});
+
+}
+const ADMIN_PASSWORD = "benike123";
+
+function openAdmin(){
+    document.getElementById("adminModal").style.display = "flex";
+}
+
+function closeAdmin(){
+    document.getElementById("adminModal").style.display = "none";
+}
+
+function checkAdmin(){
+
+const input = document.getElementById("adminPassword").value;
+
+if(input === ADMIN_PASSWORD){
+    window.location.href = "admin.html";
+} else {
+    alert("❌ Wrong password");
+}
+
+}
