@@ -2,96 +2,111 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Benike Admin Dashboard</title>
 
 <link rel="stylesheet" href="admin.css">
 
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 
 <body>
 
 <div class="sidebar">
 
-    <h2>BENIKE ADMIN</h2>
+<img src="logo.png" class="logo">
 
-    <button onclick="showTab('dashboard')">Dashboard</button>
-    <button onclick="showTab('products')">Products</button>
-    <button onclick="showTab('categories')">Categories</button>
-    <button onclick="showTab('analytics')">Analytics</button>
-    <button onclick="showTab('upload')">Upload</button>
+<h2>BENIKE ADMIN</h2>
+
+<button onclick="showTab('dashboard')">Dashboard</button>
+<button onclick="showTab('products')">Products</button>
+<button onclick="showTab('categories')">Categories</button>
+<button onclick="showTab('analytics')">Analytics</button>
+<button onclick="showTab('upload')">Upload</button>
 
 </div>
 
 <div class="main">
 
-<!-- DASHBOARD -->
 <div id="dashboard" class="tab active">
 
-    <h1>Dashboard Overview</h1>
+<h1>Dashboard Overview</h1>
 
-    <div class="cards">
+<div class="cards">
 
-        <div class="card">
-            <h2 id="totalProducts">0</h2>
-            <p>Total Products</p>
-        </div>
+<div class="card">
+<h2 id="totalProducts">0</h2>
+<p>Total Products</p>
+</div>
 
-        <div class="card">
-            <h2 id="totalCategories">0</h2>
-            <p>Categories</p>
-        </div>
+<div class="card">
+<h2 id="totalCategories">0</h2>
+<p>Categories</p>
+</div>
 
-        <div class="card">
-            <h2 id="topCategory">-</h2>
-            <p>Top Category</p>
-        </div>
-
-    </div>
+<div class="card">
+<h2 id="topCategory">-</h2>
+<p>Top Category</p>
+</div>
 
 </div>
 
-<!-- PRODUCTS -->
+</div>
+
 <div id="products" class="tab">
 
-    <h1>Products</h1>
+<h1>Products</h1>
 
-    <div id="productList"></div>
+<button class="danger-btn" onclick="deleteAllProducts()">
+Delete All Products
+</button>
+
+<div id="productList"></div>
 
 </div>
 
-<!-- CATEGORIES -->
 <div id="categories" class="tab">
 
-    <h1>Categories</h1>
+<h1>Categories</h1>
 
-    <div id="categoryList"></div>
+<div id="categoryList"></div>
 
 </div>
 
-<!-- ANALYTICS -->
 <div id="analytics" class="tab">
 
-    <h1>Analytics</h1>
+<h1>Analytics</h1>
 
-    <div id="analyticsBox"></div>
+<div id="analyticsBox"></div>
 
 </div>
 
-<!-- UPLOAD -->
 <div id="upload" class="tab">
 
-    <h1>Upload Excel Catalogue</h1>
+<h1>Excel Catalogue</h1>
 
-    <input type="file" id="excelFile" accept=".xlsx,.xls">
+<div class="upload-actions">
 
-    <button onclick="uploadExcel()">Import Products</button>
+<button onclick="downloadTemplate()">
+Download Template
+</button>
+
+<button onclick="exportProducts()">
+Export Products
+</button>
+
+</div>
+
+<input type="file" id="excelFile" accept=".xlsx,.xls">
+
+<button onclick="uploadExcel()">
+Import Products
+</button>
 
 </div>
 
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
 <script src="admin.js"></script>
 
 </body>
