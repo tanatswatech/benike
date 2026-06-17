@@ -16,17 +16,20 @@ overflow-x:hidden;
 }
 
 /* =========================
-HEADER
+IMPROVED HEADER (MODERN UI)
 ========================= */
 
 .main-header{
-background:#111;
-border-bottom:2px solid #ff2020;
-position:sticky;
-top:0;
-z-index:100;
+background: linear-gradient(135deg, #0d0d0d, #111);
+border-bottom: 2px solid rgba(255, 32, 32, 0.6);
+position: sticky;
+top: 0;
+z-index: 100;
+backdrop-filter: blur(10px);
+box-shadow: 0 5px 20px rgba(0,0,0,0.6);
 }
 
+/* TOP BAR */
 .header-top{
 display:flex;
 align-items:center;
@@ -36,49 +39,76 @@ padding:15px 5%;
 flex-wrap:wrap;
 }
 
+/* LOGO */
 .logo img{
-height:65px;
+height:70px;
 object-fit:contain;
+transition:0.3s ease;
 }
 
-/* NAVIGATION */
+.logo img:hover{
+transform:scale(1.05);
+}
 
+/* NAV */
 nav ul{
 display:flex;
-gap:25px;
+gap:30px;
 list-style:none;
 flex-wrap:wrap;
 }
 
 nav a{
-color:white;
+color:#ddd;
 text-decoration:none;
 font-weight:600;
-transition:.3s;
+position:relative;
+transition:0.3s;
+padding:5px 0;
 }
 
-nav a:hover
+nav a::after{
+content:"";
+position:absolute;
+left:0;
+bottom:-3px;
+width:0%;
+height:2px;
+background:#ff2020;
+transition:0.3s;
+}
 
-/* SEARCH */
+nav a:hover{
+color:#fff;
+}
 
+nav a:hover::after{
+width:100%;
+}
+
+/* SEARCH BOX IMPROVED */
 .search-box{
 position:relative;
-width:350px;
+width:380px;
 max-width:100%;
 }
 
 .search-box input{
 width:100%;
-padding:12px 45px 12px 18px;
+padding:13px 45px 13px 18px;
 border:none;
 outline:none;
-background:#1a1a1a;
+background:rgba(255,255,255,0.05);
 color:white;
-border-radius:30px;
-border:1px solid #333;
+border-radius:40px;
+border:1px solid rgba(255,255,255,0.1);
+transition:0.3s;
 }
 
-.search-box input:focus
+.search-box input:focus{
+border-color:#ff2020;
+box-shadow:0 0 10px rgba(255,32,32,0.3);
+}
 
 .search-box i{
 position:absolute;
@@ -87,34 +117,23 @@ top:50%;
 transform:translateY(-50%);
 color:#ff2020;
 }
-
-/* =========================
-CATEGORY BAR
-========================= */
-
 .header-categories{
 display:flex;
 gap:15px;
 padding:15px;
 overflow-x:auto;
-background:#161616;
+background:rgba(255,255,255,0.03);
 scroll-behavior:smooth;
-}
-
-.header-categories::-webkit-scrollbar{
-height:6px;
-}
-
-.header-categories::-webkit-scrollbar-thumb{
-background:#ff2020;
-border-radius:20px;
+border-top:1px solid rgba(255,255,255,0.05);
+border-bottom:1px solid rgba(255,255,255,0.05);
 }
 
 .header-category{
 min-width:140px;
+text-align:center;
 text-decoration:none;
 color:white;
-text-align:center;
+transition:0.3s;
 }
 
 .header-category img{
@@ -123,20 +142,28 @@ height:90px;
 object-fit:cover;
 border-radius:14px;
 border:2px solid transparent;
-transition:.3s;
+transition:0.3s;
+box-shadow:0 5px 15px rgba(0,0,0,0.4);
 }
 
 .header-category:hover img{
 border-color:#ff2020;
-transform:scale(1.05);
+transform:scale(1.06);
 }
 
 .header-category span{
 display:block;
 margin-top:8px;
-font-size:14px;
+font-size:13px;
 font-weight:600;
+color:#ddd;
 }
+
+.header-category:hover span{
+color:#ff2020;
+}
+
+
 
 /* =========================
 PRODUCT GRID
@@ -422,4 +449,154 @@ height:220px;
 min-width:120px;
 }
 
+}
+/* =========================
+FOOTER (MODERN UPGRADE)
+========================= */
+
+.site-footer{
+background: linear-gradient(180deg, #0d0d0d, #111);
+border-top:2px solid rgba(255,32,32,0.7);
+margin-top:60px;
+padding:50px 5% 20px;
+color:#bbb;
+box-shadow: 0 -10px 30px rgba(0,0,0,0.6);
+}
+
+.footer-container{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:30px;
+}
+
+/* HEADINGS */
+.site-footer h3,
+.site-footer h4{
+color:white;
+margin-bottom:15px;
+position:relative;
+}
+
+.site-footer h3::after,
+.site-footer h4::after{
+content:"";
+position:absolute;
+left:0;
+bottom:-6px;
+width:40px;
+height:2px;
+background:#ff2020;
+}
+
+/* TEXT */
+.site-footer p{
+line-height:1.7;
+font-size:14px;
+color:#aaa;
+}
+
+/* LINKS */
+.footer-links ul{
+list-style:none;
+padding:0;
+}
+
+.footer-links a{
+text-decoration:none;
+color:#aaa;
+display:block;
+margin-bottom:8px;
+transition:0.3s;
+}
+
+.footer-links a:hover{
+color:#ff2020;
+padding-left:5px;
+}
+
+/* SOCIAL */
+.footer-social a{
+display:inline-block;
+margin-right:12px;
+font-size:20px;
+color:#aaa;
+transition:0.3s;
+}
+
+.footer-social a:hover{
+color:#ff2020;
+transform:translateY(-3px) scale(1.2);
+}
+
+/* CONTACT ICONS */
+.footer-contact i{
+color:#ff2020;
+margin-right:8px;
+}
+
+/* BOTTOM BAR */
+.footer-bottom{
+text-align:center;
+margin-top:30px;
+padding-top:15px;
+border-top:1px solid rgba(255,255,255,0.1);
+font-size:13px;
+color:#777;
+}
+/* =========================
+ORDER BUTTON (UPGRADED)
+========================= */
+
+.buy-btn{
+flex:1;
+background: linear-gradient(135deg, #ff2020, #d10000);
+color:white;
+text-decoration:none;
+padding:12px 14px;
+text-align:center;
+border-radius:12px;
+font-weight:700;
+font-size:14px;
+letter-spacing:0.5px;
+transition:0.3s ease;
+display:flex;
+align-items:center;
+justify-content:center;
+gap:8px;
+box-shadow:0 5px 15px rgba(255,32,32,0.25);
+position:relative;
+overflow:hidden;
+}
+
+/* ICON SUPPORT */
+.buy-btn i{
+font-size:16px;
+}
+
+/* HOVER EFFECT */
+.buy-btn:hover{
+transform:translateY(-3px);
+box-shadow:0 10px 25px rgba(255,32,32,0.4);
+background: linear-gradient(135deg, #ff3b3b, #ff0000);
+}
+
+/* CLICK EFFECT */
+.buy-btn:active{
+transform:scale(0.96);
+}
+
+/* SHINE ANIMATION */
+.buy-btn::before{
+content:"";
+position:absolute;
+top:0;
+left:-100%;
+width:100%;
+height:100%;
+background:linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
+transition:0.5s;
+}
+
+.buy-btn:hover::before{
+left:100%;
 }
