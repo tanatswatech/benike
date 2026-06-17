@@ -1052,3 +1052,35 @@ nav ul li a:hover{
     background:#ff0000 !important;
     color:white !important;
 }
+.search-box{
+    margin-left:20px;
+}
+
+.search-box input{
+
+    width:250px;
+
+    padding:12px 15px;
+
+    border:none;
+
+    border-radius:50px;
+
+    outline:none;
+
+    background:#111;
+
+    color:white;
+
+    border:1px solid #333;
+
+    transition:.3s;
+}
+
+.search-box input:focus{
+
+    border-color:#ff0000;
+
+    box-shadow:0 0 10px rgba(255,0,0,.5);
+
+}
