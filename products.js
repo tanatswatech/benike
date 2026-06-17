@@ -16,7 +16,7 @@ let filteredProducts = products;
 
 if(selectedCategory){
 
-    filteredProducts = products.filter(product=>{
+    filteredProducts = products.filter(product => {
 
         const cat =
         product.Category ||
@@ -30,21 +30,27 @@ if(selectedCategory){
 
 }
 
-/* EMPTY */
+/* NO PRODUCTS */
 
 if(filteredProducts.length === 0){
 
     container.innerHTML = `
-    <div style="text-align:center;padding:50px;">
-        No products found.
-    </div>
+        <div style="
+            width:100%;
+            text-align:center;
+            padding:80px;
+            color:white;
+            font-size:22px;
+        ">
+            No products found.
+        </div>
     `;
 
 }
 
 /* SHOW PRODUCTS */
 
-filteredProducts.forEach(product=>{
+filteredProducts.forEach(product => {
 
     const name =
     product.Name ||
@@ -54,50 +60,52 @@ filteredProducts.forEach(product=>{
     const image =
     product.Image ||
     product.image ||
-    "https://via.placeholder.com/400";
+    "https://via.placeholder.com/400x300?text=No+Image";
 
     const price =
     product.Price ||
     product.price ||
+    product.Cost ||
+    product.cost ||
     "Contact Us";
+
+    const category =
+    product.Category ||
+    product.category ||
+    "General";
 
     container.innerHTML += `
 
     <div class="product-card">
 
-        <img src="${image}">
+        <img src="${image}" alt="${name}">
 
-        <div class="product-info">
+        <h3>${name}</h3>
 
-            <h3>${name}</h3>
+        <p>${price}</p>
 
-            <div class="product-price">
-                ${price}
-            </div>
+        <div class="product-actions">
 
-            <div class="product-actions">
+            <button
+            class="view-btn"
+            onclick="openProduct(
+                '${name.replace(/'/g,"")}',
+                '${image}',
+                '${price}',
+                '${category}'
+            )">
 
-                <button
-                class="view-btn"
-                onclick="openProduct(
-                    '${name}',
-                    '${image}',
-                    '${price}'
-                )">
+                <i class="fas fa-eye"></i>
 
-                    <i class="fas fa-eye"></i>
+            </button>
 
-                </button>
+            <a
+            href="https://wa.me/263784324361?text=Hello Benike Technologies, I would like to order ${name}"
+            class="buy-btn">
 
-                <a
-                href="https://wa.me/263784324361?text=Hello Benike Technologies, I would like to order ${name}"
-                class="buy-btn">
+                Order
 
-                    Order
-
-                </a>
-
-            </div>
+            </a>
 
         </div>
 
@@ -107,9 +115,9 @@ filteredProducts.forEach(product=>{
 
 });
 
-/* MODAL */
+/* MODAL FUNCTIONS */
 
-function openProduct(name,image,price){
+function openProduct(name,image,price,category){
 
     document.getElementById("modalTitle").innerText =
     name;
@@ -120,14 +128,32 @@ function openProduct(name,image,price){
     document.getElementById("modalPrice").innerText =
     price;
 
-    document.getElementById("productModal")
-    .style.display = "flex";
+    document.getElementById("modalCategory").innerText =
+    category;
+
+    document.getElementById("productModal").style.display =
+    "flex";
 
 }
 
 function closeProduct(){
 
-    document.getElementById("productModal")
-    .style.display = "none";
+    document.getElementById("productModal").style.display =
+    "none";
+
+}
+
+/* CLOSE IF CLICK OUTSIDE */
+
+window.onclick = function(e){
+
+    const modal =
+    document.getElementById("productModal");
+
+    if(e.target === modal){
+
+        modal.style.display = "none";
+
+    }
 
 }
