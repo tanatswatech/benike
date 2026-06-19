@@ -16,7 +16,31 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 </head>
 
 <body>
+<div id="productModal" class="product-modal">
 
+    <div class="modal-content">
+
+        <span class="close-modal" onclick="closeProductModal()">
+            &times;
+        </span>
+
+        <img id="modalImage" src="">
+
+        <h2 id="modalTitle"></h2>
+
+        <div id="modalPrice"></div>
+
+        <div id="modalSpecs"></div>
+
+        <a id="modalOrderBtn"
+           target="_blank"
+           class="buy-btn">
+           WhatsApp Order
+        </a>
+
+    </div>
+
+</div>
 <!-- ================= HEADER ================= -->
 <header class="main-header">
 
