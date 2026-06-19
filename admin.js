@@ -1,41 +1,49 @@
+/* ===================================
+BENIKE ADMIN DASHBOARD
+=================================== */
+
 let products =
 JSON.parse(localStorage.getItem("products")) || [];
 
 let analytics =
 JSON.parse(localStorage.getItem("analytics")) || {
-visits: 0,
-views: {},
-sales: {}
+visits:0,
+views:{},
+sales:{}
 };
 
-/* ==========================
+/* ===================================
 SAVE DATA
-========================== */
+=================================== */
 
 function saveProducts(){
+
 localStorage.setItem(
 "products",
 JSON.stringify(products)
 );
+
 }
 
 function saveAnalytics(){
+
 localStorage.setItem(
 "analytics",
 JSON.stringify(analytics)
 );
+
 }
 
-/* ==========================
+/* ===================================
 VISITS
-========================== */
+=================================== */
 
 analytics.visits++;
 saveAnalytics();
 
-/* ==========================
+/* ===================================
 TABS
-========================== */
+=================================== */
 
 function showTab(tab){
 
@@ -51,9 +59,9 @@ document
 
 }
 
-/* ==========================
+/* ===================================
 DASHBOARD
-========================== */
+=================================== */
 
 function loadDashboard(){
 
@@ -66,11 +74,13 @@ document.getElementById(
 "totalProducts"
 ).innerText = products.length;
 
-const categories =
-[
+const categories = [
 ...new Set(
 products
-.map(p => p.Category)
+.map(p =>
+p.Category ||
+p.category
+)
 .filter(Boolean)
 )
 ];
@@ -81,10 +91,12 @@ document.getElementById(
 
 let counts = {};
 
-products.forEach(p => {
+products.forEach(p=>{
 
-let cat =
-p.Category || "Uncategorized";
+const cat =
+p.Category ||
+p.category ||
+"Uncategorized";
 
 counts[cat] =
 (counts[cat] || 0) + 1;
@@ -111,9 +123,9 @@ document.getElementById(
 
 }
 
-/* ==========================
-PRODUCTS
-========================== */
+/* ===================================
+LOAD PRODUCTS
+=================================== */
 
 function loadProducts(){
 
@@ -129,13 +141,11 @@ box.innerHTML = "";
 if(products.length === 0){
 
 box.innerHTML = `
-
 <div style="
-background:#000;
 padding:30px;
-border-radius:15px;
 text-align:center;
-grid-column:1/-1;
+background:#111;
+border-radius:15px;
 ">
 No products uploaded.
 </div>
@@ -148,15 +158,16 @@ return;
 products.forEach((p,index)=>{
 
 const image =
-p["Image Url"] ||
-p.Image ||
-"https://via.placeholder.com/400x300?text=No+Image";
 
-const price =
-Number(
-String(p.Price || 0)
-.replace("$","")
-);
+p.Images?.[0] ||
+
+p.Image1 ||
+
+p.Image ||
+
+p.image ||
+
+"https://via.placeholder.com/400x300?text=No+Image";
 
 box.innerHTML += `
 
@@ -165,7 +176,6 @@ box.innerHTML += `
 <img
 src="${image}"
 onerror="this.src='https://via.placeholder.com/400x300?text=No+Image'"
-
 >
 
 <div class="product-content">
@@ -175,11 +185,17 @@ ${p.Name || "Unnamed Product"}
 </h3>
 
 <div class="product-price">
-$${price.toFixed(2)}
+${
+p.Price ||
+"Contact Us"
+}
 </div>
 
 <div class="product-category">
-${p.Category || "Uncategorized"}
+${
+p.Category ||
+"Uncategorized"
+}
 </div>
 
 </div>
@@ -189,7 +205,10 @@ ${p.Category || "Uncategorized"}
 <button
 class="delete-btn"
 onclick="deleteProduct(${index})">
-🗑 Delete </button>
+
+🗑 Delete
+
+</button>
 
 </div>
 
@@ -201,9 +220,9 @@ onclick="deleteProduct(${index})">
 
 }
 
-/* ==========================
+/* ===================================
 DELETE PRODUCT
-========================== */
+=================================== */
 
 function deleteProduct(index){
 
@@ -221,9 +240,9 @@ refresh();
 
 }
 
-/* ==========================
-DELETE ALL
-========================== */
+/* ===================================
+DELETE ALL PRODUCTS
+=================================== */
 
 function deleteAllProducts(){
 
@@ -241,9 +260,9 @@ refresh();
 
 }
 
-/* ==========================
-CATEGORIES
-========================== */
+/* ===================================
+LOAD CATEGORIES
+=================================== */
 
 function loadCategories(){
 
@@ -277,7 +296,7 @@ box.innerHTML += `
 
 <h3>${cat}</h3>
 
-<p>${groups[cat]} products</p>
+<p>${groups[cat]} Products</p>
 
 </div>
 
@@ -287,9 +306,9 @@ box.innerHTML += `
 
 }
 
-/* ==========================
-ANALYTICS
-========================== */
+/* ===================================
+LOAD ANALYTICS
+=================================== */
 
 function loadAnalytics(){
 
@@ -300,11 +319,16 @@ document.getElementById(
 
 if(!box) return;
 
-let mostViewed =
-"None";
+let totalViews = 0;
 
-let mostBought =
-"None";
+for(let p in analytics.views){
+
+totalViews +=
+analytics.views[p];
+
+}
+
+let mostViewed = "None";
 
 if(
 Object.keys(
@@ -317,70 +341,73 @@ Object.keys(
 analytics.views
 )
 .reduce((a,b)=>
+
 analytics.views[a] >
 analytics.views[b]
+
 ? a
 : b
+
 );
 
 }
-
-if(
-Object.keys(
-analytics.sales
-).length
-){
-
-mostBought =
-Object.keys(
-analytics.sales
-)
-.reduce((a,b)=>
-analytics.sales[a] >
-analytics.sales[b]
-? a
-: b
-);
-
-}
-
-const totalViews =
-Object.values(
-analytics.views
-)
-.reduce(
-(a,b)=>a+b,
-0
-);
 
 box.innerHTML = `
 
 <div class="analytics-grid">
 
 <div class="analytics-card">
+
 <h3>Total Visits</h3>
+
 <p>${analytics.visits}</p>
+
 </div>
 
 <div class="analytics-card">
+
 <h3>Total Products</h3>
+
 <p>${products.length}</p>
+
 </div>
 
 <div class="analytics-card">
+
 <h3>Total Product Views</h3>
+
 <p>${totalViews}</p>
+
 </div>
 
 <div class="analytics-card">
+
 <h3>Most Viewed Product</h3>
+
 <p>${mostViewed}</p>
+
 </div>
 
-<div class="analytics-card">
-<h3>Most Bought Product</h3>
-<p>${mostBought}</p>
 </div>
+
+<h2 style="
+margin-top:30px;
+margin-bottom:15px;
+">
+Product View Ranking
+</h2>
+
+`;
+
+for(let p in analytics.views){
+
+box.innerHTML += `
+
+<div class="cat-item">
+
+<h3>${p}</h3>
+
+<p>${analytics.views[p]} Views</p>
 
 </div>
 
@@ -388,27 +415,40 @@ box.innerHTML = `
 
 }
 
-/* ==========================
-TEMPLATE DOWNLOAD
-========================== */
+}
+
+/* ===================================
+DOWNLOAD TEMPLATE
+=================================== */
 
 function downloadTemplate(){
 
 const sample = [
 
 {
-"Product ID":"SKU001",
-"Name":"Sample Product",
-"Price":"29.99",
-"Category":"Electronics",
-"Image Url":"https://example.com/image.jpg",
-"Specs":"Color: Black"
+
+Name:"Samsung Galaxy A16",
+
+Price:"180",
+
+Category:"Phones",
+
+Image1:"https://example.com/front.jpg",
+
+Image2:"https://example.com/back.jpg",
+
+Image3:"https://example.com/side.jpg",
+
+Image4:""
+
 }
 
 ];
 
 const ws =
-XLSX.utils.json_to_sheet(sample);
+XLSX.utils.json_to_sheet(
+sample
+);
 
 const wb =
 XLSX.utils.book_new();
@@ -426,9 +466,9 @@ wb,
 
 }
 
-/* ==========================
+/* ===================================
 EXPORT PRODUCTS
-========================== */
+=================================== */
 
 function exportProducts(){
 
@@ -463,9 +503,51 @@ wb,
 
 }
 
-/* ==========================
+/* ===================================
+EXPORT ANALYTICS
+=================================== */
+
+function exportAnalytics(){
+
+let rows = [];
+
+for(let product in analytics.views){
+
+rows.push({
+
+Product: product,
+
+Views:
+analytics.views[product]
+
+});
+
+}
+
+const ws =
+XLSX.utils.json_to_sheet(
+rows
+);
+
+const wb =
+XLSX.utils.book_new();
+
+XLSX.utils.book_append_sheet(
+wb,
+ws,
+"Analytics"
+);
+
+XLSX.writeFile(
+wb,
+"Benike_Analytics.xlsx"
+);
+
+}
+
+/* ===================================
 IMPORT EXCEL
-========================== */
+=================================== */
 
 function uploadExcel(){
 
@@ -477,7 +559,7 @@ document.getElementById(
 if(!file){
 
 alert(
-"Please select an Excel file."
+"Select an Excel file."
 );
 
 return;
@@ -519,14 +601,22 @@ defval:""
 );
 
 products =
-products.map(p=>({
+products.map(p => ({
 
-...p,
+Name:p.Name,
 
-Price:Number(
-String(p.Price || 0)
-.replace("$","")
-)
+Price:p.Price,
+
+Category:p.Category,
+
+Images:[
+
+p.Image1,
+p.Image2,
+p.Image3,
+p.Image4
+
+].filter(img=>img)
 
 }));
 
@@ -539,9 +629,9 @@ products.length +
 " products imported successfully."
 );
 
-}catch(err){
+}catch(error){
 
-console.error(err);
+console.error(error);
 
 alert(
 "Failed to import Excel file."
@@ -557,15 +647,17 @@ file
 
 }
 
-/* ==========================
+/* ===================================
 REFRESH
-========================== */
+=================================== */
 
 function refresh(){
 
 products =
 JSON.parse(
-localStorage.getItem("products")
+localStorage.getItem(
+"products"
+)
 ) || [];
 
 loadDashboard();
@@ -575,8 +667,8 @@ loadAnalytics();
 
 }
 
-/* ==========================
+/* ===================================
 INIT
-========================== */
+=================================== */
 
 refresh();
