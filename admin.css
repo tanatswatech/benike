@@ -12,7 +12,9 @@ display:flex;
 min-height:100vh;
 }
 
-/* SIDEBAR */
+/* =========================
+SIDEBAR
+========================= */
 
 .sidebar{
 width:260px;
@@ -49,16 +51,18 @@ background:#111;
 color:#fff;
 cursor:pointer;
 font-size:15px;
-font-weight:500;
+font-weight:600;
 transition:.3s;
 }
 
 .sidebar button:hover{
 background:#ff0000;
-transform:translateX(3px);
+transform:translateX(4px);
 }
 
-/* MAIN */
+/* =========================
+MAIN
+========================= */
 
 .main{
 margin-left:260px;
@@ -78,7 +82,9 @@ h1{
 margin-bottom:20px;
 }
 
-/* DASHBOARD */
+/* =========================
+DASHBOARD CARDS
+========================= */
 
 .cards{
 display:grid;
@@ -97,8 +103,9 @@ transition:.3s;
 }
 
 .card:hover{
+transform:translateY(-5px);
 border-color:#ff0000;
-transform:translateY(-4px);
+box-shadow:0 10px 25px rgba(255,0,0,.2);
 }
 
 .card h2{
@@ -107,7 +114,9 @@ color:#ff0000;
 margin-bottom:10px;
 }
 
-/* PRODUCTS */
+/* =========================
+PRODUCTS
+========================= */
 
 #productList{
 display:grid;
@@ -149,7 +158,6 @@ gap:10px;
 .product-content h3{
 font-size:18px;
 font-weight:600;
-color:white;
 }
 
 .product-price{
@@ -176,7 +184,9 @@ display:flex;
 gap:10px;
 }
 
-/* BUTTONS */
+/* =========================
+BUTTONS
+========================= */
 
 .delete-btn{
 flex:1;
@@ -191,7 +201,6 @@ padding:12px;
 border-radius:12px;
 cursor:pointer;
 font-weight:600;
-font-size:14px;
 transition:.3s;
 }
 
@@ -212,36 +221,78 @@ margin-bottom:20px;
 transition:.3s;
 }
 
-.danger-btn:hover
+.danger-btn:hover{
+background:#ff0000;
+transform:translateY(-2px);
+}
+
+/* =========================
+UPLOAD BUTTONS
+========================= */
 
 .upload-actions{
 display:flex;
-gap:12px;
+gap:15px;
 margin-bottom:20px;
 flex-wrap:wrap;
 }
 
 .upload-actions button,
 #upload button{
-background:#ff0000;
+background:linear-gradient(
+135deg,
+#ff0000,
+#d40000
+);
 color:white;
 border:none;
-padding:12px 20px;
-border-radius:12px;
+padding:14px 24px;
+border-radius:14px;
 cursor:pointer;
-font-weight:600;
+font-weight:700;
+font-size:15px;
 transition:.3s;
+box-shadow:0 5px 15px rgba(255,0,0,.25);
 }
 
 .upload-actions button:hover,
-#upload button:hover
+#upload button:hover{
+transform:translateY(-3px);
+box-shadow:0 8px 20px rgba(255,0,0,.45);
+}
 
-/* FILE INPUT */
+.upload-actions button:first-child{
+background:linear-gradient(
+135deg,
+#0066ff,
+#0048c9
+);
+}
+
+.upload-actions button:first-child:hover{
+box-shadow:0 8px 20px rgba(0,102,255,.45);
+}
+
+.upload-actions button:last-child{
+background:linear-gradient(
+135deg,
+#00a651,
+#008a43
+);
+}
+
+.upload-actions button:last-child:hover{
+box-shadow:0 8px 20px rgba(0,166,81,.45);
+}
+
+/* =========================
+FILE INPUT
+========================= */
 
 input[type=file]{
 width:100%;
 max-width:500px;
-padding:12px;
+padding:14px;
 border-radius:12px;
 background:#000;
 border:1px solid #333;
@@ -249,7 +300,9 @@ color:white;
 margin-bottom:20px;
 }
 
-/* CATEGORIES */
+/* =========================
+CATEGORIES
+========================= */
 
 .cat-item{
 background:#000;
@@ -257,6 +310,12 @@ border:1px solid #222;
 padding:20px;
 border-radius:15px;
 margin-bottom:15px;
+transition:.3s;
+}
+
+.cat-item:hover{
+border-color:#ff0000;
+transform:translateY(-3px);
 }
 
 .cat-item h3{
@@ -264,7 +323,9 @@ color:#ff0000;
 margin-bottom:8px;
 }
 
-/* ANALYTICS */
+/* =========================
+ANALYTICS
+========================= */
 
 .analytics-grid{
 display:grid;
@@ -281,7 +342,11 @@ border:1px solid #222;
 transition:.3s;
 }
 
-.analytics-card:hover
+.analytics-card:hover{
+border-color:#ff0000;
+transform:translateY(-4px);
+box-shadow:0 10px 25px rgba(255,0,0,.2);
+}
 
 .analytics-card h3{
 color:#ff0000;
@@ -293,7 +358,9 @@ font-size:24px;
 font-weight:700;
 }
 
-/* SCROLLBAR */
+/* =========================
+SCROLLBAR
+========================= */
 
 ::-webkit-scrollbar{
 width:8px;
@@ -308,7 +375,9 @@ background:#ff0000;
 border-radius:10px;
 }
 
-/* MOBILE */
+/* =========================
+MOBILE
+========================= */
 
 @media(max-width:900px){
 
