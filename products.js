@@ -118,7 +118,7 @@ ${JSON.stringify(product)}
 <a
 class="buy-btn"
 target="_blank"
-href="https://wa.me/263784324361?text=Hello Benike Technologies, I would like to order ${encodeURIComponent(name)}">
+href="https://wa.me/263787166281?text=Hello Benike Technologies, I would like to order ${encodeURIComponent(name)}">
 
 <i class="fab fa-whatsapp"></i> Order
 
@@ -228,7 +228,7 @@ product["Product ID"] ||
 document.getElementById(
 "modalWhatsapp"
 ).href =
-`https://wa.me/263784324361?text=Hello Benike Technologies, I would like to order ${encodeURIComponent(product.Name)}`;
+`https://wa.me/263787166281?text=Hello Benike Technologies, I would like to order ${encodeURIComponent(product.Name)}`;
 
 document.getElementById(
 "productModal"
