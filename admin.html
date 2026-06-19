@@ -1,109 +1,182 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
 <title>Benike Admin Dashboard</title>
 
 <link rel="stylesheet" href="admin.css">
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
 </head>
 
 <body>
 
 <div class="sidebar">
 
-<img src="logo.png" class="logo">
+    <img src="logo.png" class="logo">
 
-<h2>BENIKE ADMIN</h2>
+    <h2>BENIKE ADMIN</h2>
 
-<button onclick="showTab('dashboard')">Dashboard</button>
-<button onclick="showTab('products')">Products</button>
-<button onclick="showTab('categories')">Categories</button>
-<button onclick="showTab('analytics')">Analytics</button>
-<button onclick="showTab('upload')">Upload</button>
+    <button onclick="showTab('dashboard')">
+        📊 Dashboard
+    </button>
+
+    <button onclick="showTab('products')">
+        📦 Products
+    </button>
+
+    <button onclick="showTab('categories')">
+        🗂 Categories
+    </button>
+
+    <button onclick="showTab('analytics')">
+        📈 Analytics
+    </button>
+
+    <button onclick="showTab('upload')">
+        ⬆ Upload
+    </button>
 
 </div>
 
 <div class="main">
 
-<div id="dashboard" class="tab active">
+    <!-- DASHBOARD -->
 
-<h1>Dashboard Overview</h1>
+    <div id="dashboard" class="tab active">
 
-<div class="cards">
+        <h1>Dashboard Overview</h1>
 
-<div class="card">
-<h2 id="totalProducts">0</h2>
-<p>Total Products</p>
-</div>
+        <div class="cards">
 
-<div class="card">
-<h2 id="totalCategories">0</h2>
-<p>Categories</p>
-</div>
+            <div class="card">
+                <h2 id="totalProducts">0</h2>
+                <p>Total Products</p>
+            </div>
 
-<div class="card">
-<h2 id="topCategory">-</h2>
-<p>Top Category</p>
-</div>
+            <div class="card">
+                <h2 id="totalCategories">0</h2>
+                <p>Categories</p>
+            </div>
 
-</div>
+            <div class="card">
+                <h2 id="topCategory">-</h2>
+                <p>Top Category</p>
+            </div>
 
-</div>
+        </div>
 
-<div id="products" class="tab">
+    </div>
 
-<h1>Products</h1>
+    <!-- PRODUCTS -->
 
-<button class="danger-btn" onclick="deleteAllProducts()">
-Delete All Products
-</button>
+    <div id="products" class="tab">
 
-<div id="productList"></div>
+        <div class="section-header">
 
-</div>
+            <h1>Products</h1>
 
-<div id="categories" class="tab">
+            <button
+            class="danger-btn"
+            onclick="deleteAllProducts()">
 
-<h1>Categories</h1>
+                Delete All Products
 
-<div id="categoryList"></div>
+            </button>
 
-</div>
+        </div>
 
-<div id="analytics" class="tab">
+        <div id="productList"></div>
 
-<h1>Analytics</h1>
+    </div>
 
-<div id="analyticsBox"></div>
+    <!-- CATEGORIES -->
 
-</div>
+    <div id="categories" class="tab">
 
-<div id="upload" class="tab">
+        <h1>Categories</h1>
 
-<h1>Excel Catalogue</h1>
+        <div id="categoryList"></div>
 
-<div class="upload-actions">
+    </div>
 
-<button onclick="downloadTemplate()">
-Download Template
-</button>
+    <!-- ANALYTICS -->
 
-<button onclick="exportProducts()">
-Export Products
-</button>
+    <div id="analytics" class="tab">
 
-</div>
+        <div class="section-header">
 
-<input type="file" id="excelFile" accept=".xlsx,.xls">
+            <h1>Analytics</h1>
 
-<button onclick="uploadExcel()">
-Import Products
-</button>
+            <button onclick="exportAnalytics()">
 
-</div>
+                Export Analytics
+
+            </button>
+
+        </div>
+
+        <div id="analyticsBox"></div>
+
+    </div>
+
+    <!-- UPLOAD -->
+
+    <div id="upload" class="tab">
+
+        <h1>Excel Catalogue Upload</h1>
+
+        <div class="upload-actions">
+
+            <button onclick="downloadTemplate()">
+                Download Template
+            </button>
+
+            <button onclick="exportProducts()">
+                Export Products
+            </button>
+
+        </div>
+
+        <div class="upload-box">
+
+            <input
+            type="file"
+            id="excelFile"
+            accept=".xlsx,.xls">
+
+            <button onclick="uploadExcel()">
+
+                Import Products
+
+            </button>
+
+        </div>
+
+        <div class="upload-info">
+
+            <h3>Required Excel Format</h3>
+
+            <p>
+                Name | Price | Category |
+                Image1 | Image2 | Image3 | Image4
+            </p>
+
+            <p>
+                Multiple product images are supported.
+            </p>
+
+            <p>
+                Images must be direct image URLs.
+            </p>
+
+        </div>
+
+    </div>
 
 </div>
 
