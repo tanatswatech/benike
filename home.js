@@ -110,7 +110,7 @@ if (featured) {
                     <p>${price}</p>
 
                     <a
-                        href="https://wa.me/263784324361?text=Hello Benike Technologies, I would like to order ${encodeURIComponent(name)}"
+                        href="https://wa.me/263787166281?text=Hello Benike Technologies, I would like to order ${encodeURIComponent(name)}"
                         class="buy-btn"
                         target="_blank">
                         WhatsApp Order
