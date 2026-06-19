@@ -1,6 +1,11 @@
 const products =
 JSON.parse(localStorage.getItem("products")) || [];
 
+const analytics =
+JSON.parse(localStorage.getItem("analytics")) || {
+views:{}
+};
+
 const container =
 document.getElementById("productsContainer");
 
@@ -12,24 +17,40 @@ params.get("category");
 
 let filteredProducts = [...products];
 
+let currentImages = [];
+let currentImageIndex = 0;
+
+
 /* CATEGORY FILTER */
 
 if(selectedCategory){
 
 filteredProducts =
-filteredProducts.filter(product => {
+filteredProducts.filter(product=>{
 
-const category =
-product.Category ||
-product.category ||
-"";
+const cat =
+(product.Category || "")
+.toLowerCase();
 
-return category.toLowerCase() ===
+return cat ===
 selectedCategory.toLowerCase();
 
 });
 
 }
+
+
+/* SAVE ANALYTICS */
+
+function saveAnalytics(){
+
+localStorage.setItem(
+"analytics",
+JSON.stringify(analytics)
+);
+
+}
+
 
 /* RENDER PRODUCTS */
 
@@ -55,32 +76,11 @@ return;
 
 list.forEach(product=>{
 
-const name =
-product.Name ||
-"Unnamed Product";
-
 const image =
+product.Image1 ||
 product["Image Url"] ||
 product.Image ||
 "https://via.placeholder.com/500x400?text=No+Image";
-
-const price =
-Number(
-String(product.Price || 0)
-.replace("$","")
-);
-
-const category =
-product.Category ||
-"General";
-
-const specs =
-product.Specs ||
-"No specifications available.";
-
-const productId =
-product["Product ID"] ||
-"N/A";
 
 container.innerHTML += `
 
@@ -88,28 +88,28 @@ container.innerHTML += `
 
 <img
 src="${image}"
-alt="${name}"
+alt="${product.Name}"
 onerror="this.src='https://via.placeholder.com/500x400?text=No+Image'">
 
 <div class="card-content">
 
 <div class="product-category">
-${category}
+${product.Category || "General"}
 </div>
 
-<h3>${name}</h3>
+<h3>
+${product.Name || ""}
+</h3>
 
 <div class="product-price">
-$${price.toFixed(2)}
+$${product.Price || 0}
 </div>
 
 <div class="product-actions">
 
 <button
 class="view-btn"
-onclick='openProduct(
-${JSON.stringify(product)}
-)'>
+onclick='openProduct(${JSON.stringify(product)})'>
 
 <i class="fas fa-eye"></i>
 
@@ -118,9 +118,10 @@ ${JSON.stringify(product)}
 <a
 class="buy-btn"
 target="_blank"
-href="https://wa.me/263787166281?text=Hello Benike Technologies, I would like to order ${encodeURIComponent(name)}">
+href="https://wa.me/263787166281?text=Hello Benike Technologies, I would like to order ${encodeURIComponent(product.Name)}">
 
-<i class="fab fa-whatsapp"></i> Order
+<i class="fab fa-whatsapp"></i>
+Order
 
 </a>
 
@@ -136,77 +137,51 @@ href="https://wa.me/263787166281?text=Hello Benike Technologies, I would like to
 
 }
 
-/* SEARCH */
 
-const searchInput =
-document.getElementById("productSearch");
-
-if(searchInput){
-
-searchInput.addEventListener(
-"input",
-function(){
-
-const query =
-this.value.toLowerCase();
-
-const results =
-filteredProducts.filter(p=>{
-
-const name =
-(p.Name || "")
-.toLowerCase();
-
-const category =
-(p.Category || "")
-.toLowerCase();
-
-const specs =
-(p.Specs || "")
-.toLowerCase();
-
-return (
-name.includes(query) ||
-category.includes(query) ||
-specs.includes(query)
-);
-
-});
-
-renderProducts(results);
-
-}
-);
-
-}
-
-/* PRODUCT MODAL */
+/* PRODUCT POPUP */
 
 function openProduct(product){
 
-const image =
-product["Image Url"] ||
-product.Image;
+const productName =
+product.Name || "";
 
-const price =
-Number(
-String(product.Price || 0)
-.replace("$","")
-);
+analytics.views[productName] =
+(analytics.views[productName] || 0) + 1;
+
+saveAnalytics();
+
+currentImages = [
+
+product.Image1,
+product.Image2,
+product.Image3,
+product.Image4
+
+].filter(Boolean);
+
+if(currentImages.length === 0){
+
+currentImages = [
+"https://via.placeholder.com/500x400?text=No+Image"
+];
+
+}
+
+currentImageIndex = 0;
 
 document.getElementById(
 "modalImage"
-).src = image;
+).src = currentImages[0];
 
 document.getElementById(
 "modalTitle"
 ).innerText =
-product.Name || "";
+productName;
 
 document.getElementById(
 "modalPrice"
 ).innerText =
-"$" + price.toFixed(2);
+"$" + (product.Price || 0);
 
 document.getElementById(
 "modalCategory"
@@ -228,7 +203,7 @@ product["Product ID"] ||
 document.getElementById(
 "modalWhatsapp"
 ).href =
-`https://wa.me/263787166281?text=Hello Benike Technologies, I would like to order ${encodeURIComponent(product.Name)}`;
+`https://wa.me/263787166281?text=Hello Benike Technologies, I would like to order ${encodeURIComponent(productName)}`;
 
 document.getElementById(
 "productModal"
@@ -236,6 +211,48 @@ document.getElementById(
 "flex";
 
 }
+
+
+/* SLIDER */
+
+function nextImage(){
+
+currentImageIndex++;
+
+if(
+currentImageIndex >=
+currentImages.length
+){
+currentImageIndex = 0;
+}
+
+document.getElementById(
+"modalImage"
+).src =
+currentImages[currentImageIndex];
+
+}
+
+function prevImage(){
+
+currentImageIndex--;
+
+if(currentImageIndex < 0){
+
+currentImageIndex =
+currentImages.length - 1;
+
+}
+
+document.getElementById(
+"modalImage"
+).src =
+currentImages[currentImageIndex];
+
+}
+
+
+/* CLOSE */
 
 function closeProduct(){
 
@@ -261,5 +278,53 @@ modal.style.display =
 }
 
 };
+
+
+/* SEARCH */
+
+const searchInput =
+document.getElementById(
+"productSearch"
+);
+
+if(searchInput){
+
+searchInput.addEventListener(
+"input",
+function(){
+
+const query =
+this.value.toLowerCase();
+
+const results =
+filteredProducts.filter(p=>{
+
+return (
+
+(p.Name || "")
+.toLowerCase()
+.includes(query)
+
+||
+
+(p.Category || "")
+.toLowerCase()
+.includes(query)
+
+||
+
+(p.Specs || "")
+.toLowerCase()
+.includes(query)
+
+);
+
+});
+
+renderProducts(results);
+
+});
+
+}
 
 renderProducts(filteredProducts);
