@@ -1,11 +1,15 @@
+/* ===================================
+BENIKE PRODUCTS PAGE
+=================================== */
+
 const products =
 JSON.parse(localStorage.getItem("products")) || [];
 
 const analytics =
 JSON.parse(localStorage.getItem("analytics")) || {
-visits:0,
-views:{},
-sales:{}
+    visits:0,
+    views:{},
+    sales:{}
 };
 
 const container =
@@ -17,385 +21,320 @@ new URLSearchParams(window.location.search);
 const selectedCategory =
 params.get("category");
 
-const searchQuery =
-params.get("search");
-
 let filteredProducts = [...products];
 
-
-/* ==========================
+/* ===================================
 CATEGORY FILTER
-========================== */
+=================================== */
 
 if(selectedCategory){
 
-filteredProducts =
-filteredProducts.filter(product=>{
+    filteredProducts =
+    filteredProducts.filter(product=>{
 
-const category =
-(
-product.Category ||
-product.category ||
-""
-).toLowerCase();
+        const category =
+        (
+            product.Category ||
+            ""
+        ).toLowerCase();
 
-return category ===
-selectedCategory.toLowerCase();
+        return (
+            category ===
+            selectedCategory.toLowerCase()
+        );
 
-});
-
-}
-
-
-/* ==========================
-SEARCH FILTER
-========================== */
-
-if(searchQuery){
-
-filteredProducts =
-filteredProducts.filter(product=>{
-
-const name =
-(product.Name || "")
-.toLowerCase();
-
-const category =
-(product.Category || "")
-.toLowerCase();
-
-const specs =
-(product.Specs || "")
-.toLowerCase();
-
-const query =
-searchQuery.toLowerCase();
-
-return(
-name.includes(query) ||
-category.includes(query) ||
-specs.includes(query)
-);
-
-});
+    });
 
 }
 
-
-/* ==========================
+/* ===================================
 RENDER PRODUCTS
-========================== */
+=================================== */
 
 function renderProducts(list){
 
-container.innerHTML = "";
+    container.innerHTML = "";
 
-if(list.length === 0){
+    if(list.length === 0){
 
-container.innerHTML = `
+        container.innerHTML = `
 
-<div class="empty-state">
+        <div class="empty-state">
 
-No products found.
+            No products found.
 
-</div>
+        </div>
 
-`;
+        `;
 
-return;
+        return;
+    }
 
-}
+    list.forEach(product=>{
 
-list.forEach(product=>{
+        const name =
+        product.Name ||
+        "Unnamed Product";
 
-const name =
-product.Name ||
-"Unnamed Product";
+        const image =
 
-const image =
-product["Image Url 1"] ||
-product["Image Url"] ||
-product.Image ||
-"https://via.placeholder.com/500x400?text=No+Image";
+        product.Images?.[0] ||
 
-const price =
-product.Price ||
-"Contact Us";
+        "https://via.placeholder.com/500x400?text=No+Image";
 
-const category =
-product.Category ||
-"General";
+        const price =
+        product.Price ||
+        "Contact Us";
 
-container.innerHTML += `
+        const category =
+        product.Category ||
+        "General";
 
-<div class="product-card">
+        container.innerHTML += `
 
-<img
-src="${image}"
-alt="${name}"
-onerror="this.src='https://via.placeholder.com/500x400?text=No+Image'">
+        <div class="product-card">
 
-<div class="card-content">
+            <img
+            src="${image}"
+            alt="${name}"
+            onerror="this.src='https://via.placeholder.com/500x400?text=No+Image'">
 
-<div class="product-category">
+            <div class="card-content">
 
-${category}
+                <div class="product-category">
+                    ${category}
+                </div>
 
-</div>
+                <h3>${name}</h3>
 
-<h3>${name}</h3>
+                <div class="product-price">
+                    $${price}
+                </div>
 
-<div class="product-price">
+                <div class="product-actions">
 
-${price}
+                    <button
+                    class="view-btn"
+                    onclick='openProduct(${JSON.stringify(product)})'>
 
-</div>
+                        <i class="fas fa-eye"></i>
 
-<div class="product-actions">
+                    </button>
 
-<button
-class="view-btn"
-onclick='openProduct(${JSON.stringify(product)})'>
+                    <a
+                    class="buy-btn"
+                    target="_blank"
+                    href="https://wa.me/263787166281?text=Hello Benike Technologies, I would like to order ${encodeURIComponent(name)}">
 
-<i class="fas fa-eye"></i>
+                        <i class="fab fa-whatsapp"></i>
 
-</button>
+                        Order
 
-<a
-class="buy-btn"
-target="_blank"
-href="https://wa.me/263787166281?text=Hello Benike Technologies, I would like to order ${encodeURIComponent(name)}">
+                    </a>
 
-<i class="fab fa-whatsapp"></i>
+                </div>
 
-Order
+            </div>
 
-</a>
+        </div>
 
-</div>
+        `;
 
-</div>
-
-</div>
-
-`;
-
-});
+    });
 
 }
 
-
-/* ==========================
-SEARCH INPUT
-========================== */
+/* ===================================
+SEARCH
+=================================== */
 
 const searchInput =
 document.getElementById("productSearch");
 
 if(searchInput){
 
-searchInput.addEventListener(
-"input",
-function(){
+    searchInput.addEventListener(
+    "input",
+    function(){
 
-const query =
-this.value.toLowerCase();
+        const query =
+        this.value.toLowerCase();
 
-const results =
-filteredProducts.filter(product=>{
+        const results =
+        filteredProducts.filter(product=>{
 
-const name =
-(product.Name || "")
-.toLowerCase();
+            const name =
+            (product.Name || "")
+            .toLowerCase();
 
-const category =
-(product.Category || "")
-.toLowerCase();
+            const category =
+            (product.Category || "")
+            .toLowerCase();
 
-const specs =
-(product.Specs || "")
-.toLowerCase();
+            return(
 
-return(
-name.includes(query) ||
-category.includes(query) ||
-specs.includes(query)
-);
+                name.includes(query) ||
 
-});
+                category.includes(query)
 
-renderProducts(results);
+            );
 
-}
-);
+        });
+
+        renderProducts(results);
+
+    });
 
 }
 
-
-/* ==========================
-PRODUCT MODAL
-========================== */
+/* ===================================
+OPEN PRODUCT MODAL
+=================================== */
 
 function openProduct(product){
 
-const images = [
+    const images =
 
-product["Image Url 1"],
-product["Image Url 2"],
-product["Image Url 3"],
-product["Image Url 4"],
-product["Image Url 5"]
+    product.Images ||
 
-].filter(Boolean);
+    [];
 
+    const finalImages =
+    images.length
+    ? images
+    : [
+        "https://via.placeholder.com/500x400?text=No+Image"
+      ];
 
-if(images.length === 0){
+    let currentImage = 0;
 
-images.push(
-product["Image Url"] ||
-product.Image ||
-"https://via.placeholder.com/500x400?text=No+Image"
-);
+    const modalImage =
+    document.getElementById("modalImage");
 
-}
+    modalImage.src =
+    finalImages[0];
 
+    document.getElementById(
+    "modalTitle"
+    ).innerText =
+    product.Name || "";
 
-let currentImage = 0;
+    document.getElementById(
+    "modalPrice"
+    ).innerText =
+    "$" + (
+        product.Price ||
+        "0"
+    );
 
-document.getElementById(
-"modalImage"
-).src =
-images[0];
+    document.getElementById(
+    "modalCategory"
+    ).innerText =
+    product.Category || "";
 
-document.getElementById(
-"modalTitle"
-).innerText =
-product.Name || "";
+    document.getElementById(
+    "modalSpecs"
+    ).innerText =
+    product.Specs ||
+    "No specifications available.";
 
-document.getElementById(
-"modalPrice"
-).innerText =
-product.Price ||
-"Contact Us";
+    document.getElementById(
+    "modalProductId"
+    ).innerText =
+    product["Product ID"] ||
+    "N/A";
 
-document.getElementById(
-"modalCategory"
-).innerText =
-product.Category ||
-"";
+    document.getElementById(
+    "modalWhatsapp"
+    ).href =
 
-document.getElementById(
-"modalSpecs"
-).innerText =
-product.Specs ||
-"No specifications available.";
+    `https://wa.me/263787166281?text=Hello Benike Technologies, I would like to order ${encodeURIComponent(product.Name)}`;
 
-document.getElementById(
-"modalProductId"
-).innerText =
-product["Product ID"] ||
-"N/A";
+    /* ANALYTICS */
 
+    analytics.views[
+        product.Name
+    ] =
 
-document.getElementById(
-"modalWhatsapp"
-).href =
-`https://wa.me/263787166281?text=Hello Benike Technologies, I would like to order ${encodeURIComponent(product.Name)}`;
+    (
+        analytics.views[
+            product.Name
+        ] || 0
+    ) + 1;
 
+    localStorage.setItem(
+        "analytics",
+        JSON.stringify(analytics)
+    );
 
-/* ANALYTICS */
+    /* IMAGE SLIDER */
 
-analytics.views[
-product.Name
-] =
-(
-analytics.views[
-product.Name
-] || 0
-) + 1;
+    clearInterval(
+        window.productSlider
+    );
 
-localStorage.setItem(
-"analytics",
-JSON.stringify(analytics)
-);
+    window.productSlider =
+    setInterval(()=>{
 
+        currentImage++;
 
-/* IMAGE SLIDER */
+        if(
+        currentImage >=
+        finalImages.length
+        ){
+            currentImage = 0;
+        }
 
-const modalImage =
-document.getElementById(
-"modalImage"
-);
+        modalImage.src =
+        finalImages[currentImage];
 
-clearInterval(
-window.productSlider
-);
+    },3000);
 
-window.productSlider =
-setInterval(()=>{
-
-currentImage++;
-
-if(currentImage >= images.length){
-
-currentImage = 0;
-
-}
-
-modalImage.src =
-images[currentImage];
-
-},3000);
-
-
-document.getElementById(
-"productModal"
-).style.display =
-"flex";
+    document.getElementById(
+    "productModal"
+    ).style.display =
+    "flex";
 
 }
 
-
-/* ==========================
-CLOSE MODAL
-========================== */
+/* ===================================
+CLOSE PRODUCT
+=================================== */
 
 function closeProduct(){
 
-clearInterval(
-window.productSlider
-);
+    clearInterval(
+        window.productSlider
+    );
 
-document.getElementById(
-"productModal"
-).style.display =
-"none";
+    document.getElementById(
+    "productModal"
+    ).style.display =
+    "none";
 
 }
 
-
-/* ==========================
+/* ===================================
 CLICK OUTSIDE
-========================== */
+=================================== */
 
 window.onclick = function(e){
 
-const modal =
-document.getElementById(
-"productModal"
-);
+    const modal =
+    document.getElementById(
+        "productModal"
+    );
 
-if(e.target === modal){
+    if(e.target === modal){
 
-closeProduct();
+        closeProduct();
 
-}
+    }
 
 };
 
-
-/* ==========================
+/* ===================================
 INITIAL LOAD
-========================== */
+=================================== */
 
 renderProducts(filteredProducts);
