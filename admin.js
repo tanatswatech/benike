@@ -17,21 +17,17 @@ SAVE DATA
 =================================== */
 
 function saveProducts(){
-
 localStorage.setItem(
 "products",
 JSON.stringify(products)
 );
-
 }
 
 function saveAnalytics(){
-
 localStorage.setItem(
 "analytics",
 JSON.stringify(analytics)
 );
-
 }
 
 /* ===================================
@@ -75,14 +71,18 @@ document.getElementById(
 ).innerText = products.length;
 
 const categories = [
+
 ...new Set(
+
 products
 .map(p =>
 p.Category ||
 p.category
 )
 .filter(Boolean)
+
 )
+
 ];
 
 document.getElementById(
@@ -110,9 +110,11 @@ if(Object.keys(counts).length){
 top =
 Object.keys(counts)
 .reduce((a,b)=>
+
 counts[a] > counts[b]
 ? a
 : b
+
 );
 
 }
@@ -141,14 +143,18 @@ box.innerHTML = "";
 if(products.length === 0){
 
 box.innerHTML = `
+
 <div style="
 padding:30px;
 text-align:center;
 background:#111;
 border-radius:15px;
 ">
+
 No products uploaded.
+
 </div>
+
 `;
 
 return;
@@ -161,11 +167,11 @@ const image =
 
 p.Images?.[0] ||
 
+p["Image 1"] ||
+
 p.Image1 ||
 
 p.Image ||
-
-p.image ||
 
 "https://via.placeholder.com/400x300?text=No+Image";
 
@@ -186,15 +192,13 @@ ${p.Name || "Unnamed Product"}
 
 <div class="product-price">
 ${
-p.Price ||
-"Contact Us"
+p.Price || "Contact Us"
 }
 </div>
 
 <div class="product-category">
 ${
-p.Category ||
-"Uncategorized"
+p.Category || "Uncategorized"
 }
 </div>
 
@@ -226,11 +230,9 @@ DELETE PRODUCT
 
 function deleteProduct(index){
 
-if(
-!confirm(
+if(!confirm(
 "Delete this product?"
-)
-) return;
+)) return;
 
 products.splice(index,1);
 
@@ -246,11 +248,9 @@ DELETE ALL PRODUCTS
 
 function deleteAllProducts(){
 
-if(
-!confirm(
+if(!confirm(
 "Delete ALL products?"
-)
-) return;
+)) return;
 
 products = [];
 
@@ -357,35 +357,23 @@ box.innerHTML = `
 <div class="analytics-grid">
 
 <div class="analytics-card">
-
 <h3>Total Visits</h3>
-
 <p>${analytics.visits}</p>
-
 </div>
 
 <div class="analytics-card">
-
 <h3>Total Products</h3>
-
 <p>${products.length}</p>
-
 </div>
 
 <div class="analytics-card">
-
 <h3>Total Product Views</h3>
-
 <p>${totalViews}</p>
-
 </div>
 
 <div class="analytics-card">
-
 <h3>Most Viewed Product</h3>
-
 <p>${mostViewed}</p>
-
 </div>
 
 </div>
@@ -427,19 +415,25 @@ const sample = [
 
 {
 
-Name:"Samsung Galaxy A16",
+"Product ID":"SKU001",
 
-Price:"180",
+"Name":"Samsung Galaxy S25 Ultra",
 
-Category:"Phones",
+"Price":"1299",
 
-Image1:"https://example.com/front.jpg",
+"Category":"Phones",
 
-Image2:"https://example.com/back.jpg",
+"Image 1":"https://example.com/front.jpg",
 
-Image3:"https://example.com/side.jpg",
+"Image 2":"https://example.com/back.jpg",
 
-Image4:""
+"Image 3":"https://example.com/side.jpg",
+
+"Image 4":"https://example.com/box.jpg",
+
+"Image 5":"",
+
+"Specs":"12GB RAM | 512GB Storage | 200MP Camera"
 
 }
 
@@ -515,7 +509,7 @@ for(let product in analytics.views){
 
 rows.push({
 
-Product: product,
+Product:product,
 
 Views:
 analytics.views[product]
@@ -603,20 +597,30 @@ defval:""
 products =
 products.map(p => ({
 
-Name:p.Name,
+"Product ID":
+p["Product ID"] || "",
 
-Price:p.Price,
+Name:
+p.Name || "",
 
-Category:p.Category,
+Price:
+p.Price || "",
+
+Category:
+p.Category || "",
+
+Specs:
+p.Specs || "",
 
 Images:[
 
-p.Image1,
-p.Image2,
-p.Image3,
-p.Image4
+p["Image 1"],
+p["Image 2"],
+p["Image 3"],
+p["Image 4"],
+p["Image 5"]
 
-].filter(img=>img)
+].filter(img => img)
 
 }));
 
