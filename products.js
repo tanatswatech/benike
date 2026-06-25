@@ -22,7 +22,8 @@ const selectedCategory =
 params.get("category");
 
 let filteredProducts = [...products];
-
+let currentImages = [];
+let currentImageIndex = 0;
 /* ===================================
 CATEGORY FILTER
 =================================== */
@@ -269,31 +270,55 @@ function openProduct(product){
 
     /* IMAGE SLIDER */
 
-    clearInterval(
-        window.productSlider
-    );
+    currentImages = finalImages;
+currentImageIndex = 0;
 
-    window.productSlider =
-    setInterval(()=>{
+modalImage.src =
+currentImages[currentImageIndex];
 
-        currentImage++;
+clearInterval(window.productSlider);
 
-        if(
-        currentImage >=
-        finalImages.length
-        ){
-            currentImage = 0;
-        }
+window.productSlider = setInterval(() => {
 
-        modalImage.src =
-        finalImages[currentImage];
+    nextImage();
 
-    },3000);
+}, 3000);
+    function nextImage(){
+
+    if(currentImages.length <= 1) return;
+
+    currentImageIndex++;
+
+    if(currentImageIndex >= currentImages.length){
+
+        currentImageIndex = 0;
+
+    }
 
     document.getElementById(
-    "productModal"
-    ).style.display =
-    "flex";
+    "modalImage"
+    ).src =
+    currentImages[currentImageIndex];
+
+}
+
+function prevImage(){
+
+    if(currentImages.length <= 1) return;
+
+    currentImageIndex--;
+
+    if(currentImageIndex < 0){
+
+        currentImageIndex =
+        currentImages.length - 1;
+
+    }
+
+    document.getElementById(
+    "modalImage"
+    ).src =
+    currentImages[currentImageIndex];
 
 }
 
