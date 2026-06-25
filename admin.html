@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
 <meta charset="UTF-8">
@@ -14,6 +15,8 @@
 </head>
 
 <body>
+
+<!-- SIDEBAR -->
 
 <div class="sidebar">
 
@@ -42,6 +45,8 @@
     </button>
 
 </div>
+
+<!-- MAIN CONTENT -->
 
 <div class="main">
 
@@ -114,7 +119,7 @@
 
             <button onclick="exportAnalytics()">
 
-                Export Analytics
+                📊 Export Analytics
 
             </button>
 
@@ -133,11 +138,15 @@
         <div class="upload-actions">
 
             <button onclick="downloadTemplate()">
-                Download Template
+                📥 Download Template
             </button>
 
             <button onclick="exportProducts()">
-                Export Products
+                📦 Export Products
+            </button>
+
+            <button onclick="exportAnalytics()">
+                📊 Export Analytics
             </button>
 
         </div>
@@ -150,9 +159,7 @@
             accept=".xlsx,.xls">
 
             <button onclick="uploadExcel()">
-
-                Import Products
-
+                ⬆ Import Products
             </button>
 
         </div>
@@ -162,12 +169,24 @@
             <h3>Required Excel Format</h3>
 
             <p>
-                Name | Price | Category |
-                Image1 | Image2 | Image3 | Image4
+                Product ID | Name | Price | Category
+            </p>
+
+            <p>
+                Image 1 | Image 2 | Image 3 |
+                Image 4 | Image 5
+            </p>
+
+            <p>
+                Specs
             </p>
 
             <p>
                 Multiple product images are supported.
+            </p>
+
+            <p>
+                Product view analytics are supported.
             </p>
 
             <p>
