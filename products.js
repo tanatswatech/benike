@@ -1,5 +1,5 @@
 /* ===================================
-BENIKE PRODUCTS PAGE
+BENIKE PRODUCTS PAGE (FIXED)
 =================================== */
 
 const products =
@@ -21,9 +21,18 @@ new URLSearchParams(window.location.search);
 const selectedCategory =
 params.get("category");
 
+const searchQuery =
+params.get("search");
+
 let filteredProducts = [...products];
+
+/* ===================================
+GLOBAL IMAGE STATE
+=================================== */
+
 let currentImages = [];
 let currentImageIndex = 0;
+
 /* ===================================
 CATEGORY FILTER
 =================================== */
@@ -34,14 +43,29 @@ if(selectedCategory){
     filteredProducts.filter(product=>{
 
         const category =
-        (
-            product.Category ||
-            ""
-        ).toLowerCase();
+        (product.Category || "").toLowerCase();
+
+        return category === selectedCategory.toLowerCase();
+
+    });
+
+}
+
+/* ===================================
+SEARCH FILTER (URL SEARCH)
+=================================== */
+
+if(searchQuery){
+
+    filteredProducts =
+    filteredProducts.filter(product=>{
+
+        const name = (product.Name || "").toLowerCase();
+        const category = (product.Category || "").toLowerCase();
 
         return (
-            category ===
-            selectedCategory.toLowerCase()
+            name.includes(searchQuery.toLowerCase()) ||
+            category.includes(searchQuery.toLowerCase())
         );
 
     });
@@ -59,37 +83,22 @@ function renderProducts(list){
     if(list.length === 0){
 
         container.innerHTML = `
-
         <div class="empty-state">
-
             No products found.
-
-        </div>
-
-        `;
-
+        </div>`;
         return;
     }
 
     list.forEach(product=>{
 
-        const name =
-        product.Name ||
-        "Unnamed Product";
+        const name = product.Name || "Unnamed Product";
 
         const image =
-
         product.Images?.[0] ||
-
         "https://via.placeholder.com/500x400?text=No+Image";
 
-        const price =
-        product.Price ||
-        "Contact Us";
-
-        const category =
-        product.Category ||
-        "General";
+        const price = product.Price || "Contact Us";
+        const category = product.Category || "General";
 
         container.innerHTML += `
 
@@ -102,35 +111,23 @@ function renderProducts(list){
 
             <div class="card-content">
 
-                <div class="product-category">
-                    ${category}
-                </div>
+                <div class="product-category">${category}</div>
 
                 <h3>${name}</h3>
 
-                <div class="product-price">
-                    $${price}
-                </div>
+                <div class="product-price">$${price}</div>
 
                 <div class="product-actions">
 
-                    <button
-                    class="view-btn"
+                    <button class="view-btn"
                     onclick='openProduct(${JSON.stringify(product)})'>
-
                         <i class="fas fa-eye"></i>
-
                     </button>
 
-                    <a
-                    class="buy-btn"
+                    <a class="buy-btn"
                     target="_blank"
                     href="https://wa.me/263787166281?text=Hello Benike Technologies, I would like to order ${encodeURIComponent(name)}">
-
-                        <i class="fab fa-whatsapp"></i>
-
-                        Order
-
+                        <i class="fab fa-whatsapp"></i> Order
                     </a>
 
                 </div>
@@ -146,7 +143,7 @@ function renderProducts(list){
 }
 
 /* ===================================
-SEARCH
+SEARCH INPUT
 =================================== */
 
 const searchInput =
@@ -154,30 +151,15 @@ document.getElementById("productSearch");
 
 if(searchInput){
 
-    searchInput.addEventListener(
-    "input",
-    function(){
+    searchInput.addEventListener("input", function(){
 
-        const query =
-        this.value.toLowerCase();
+        const query = this.value.toLowerCase();
 
-        const results =
-        filteredProducts.filter(product=>{
+        const results = filteredProducts.filter(product=>{
 
-            const name =
-            (product.Name || "")
-            .toLowerCase();
-
-            const category =
-            (product.Category || "")
-            .toLowerCase();
-
-            return(
-
-                name.includes(query) ||
-
-                category.includes(query)
-
+            return (
+                (product.Name || "").toLowerCase().includes(query) ||
+                (product.Category || "").toLowerCase().includes(query)
             );
 
         });
@@ -189,117 +171,65 @@ if(searchInput){
 }
 
 /* ===================================
-OPEN PRODUCT MODAL
+OPEN PRODUCT MODAL (FIXED SLIDER)
 =================================== */
 
 function openProduct(product){
 
     const images =
+    product.Images?.length
+        ? product.Images
+        : ["https://via.placeholder.com/500x400?text=No+Image"];
 
-    product.Images ||
-
-    [];
-
-    const finalImages =
-    images.length
-    ? images
-    : [
-        "https://via.placeholder.com/500x400?text=No+Image"
-      ];
-
-    let currentImage = 0;
+    currentImages = images;
+    currentImageIndex = 0;
 
     const modalImage =
     document.getElementById("modalImage");
 
-    modalImage.src =
-    finalImages[0];
+    modalImage.src = currentImages[0];
 
-    document.getElementById(
-    "modalTitle"
-    ).innerText =
-    product.Name || "";
+    document.getElementById("modalTitle").innerText = product.Name || "";
+    document.getElementById("modalPrice").innerText = "$" + (product.Price || "0");
+    document.getElementById("modalCategory").innerText = product.Category || "";
+    document.getElementById("modalSpecs").innerText = product.Specs || "No specifications available.";
+    document.getElementById("modalProductId").innerText = product["Product ID"] || "N/A";
 
-    document.getElementById(
-    "modalPrice"
-    ).innerText =
-    "$" + (
-        product.Price ||
-        "0"
-    );
-
-    document.getElementById(
-    "modalCategory"
-    ).innerText =
-    product.Category || "";
-
-    document.getElementById(
-    "modalSpecs"
-    ).innerText =
-    product.Specs ||
-    "No specifications available.";
-
-    document.getElementById(
-    "modalProductId"
-    ).innerText =
-    product["Product ID"] ||
-    "N/A";
-
-    document.getElementById(
-    "modalWhatsapp"
-    ).href =
-
+    document.getElementById("modalWhatsapp").href =
     `https://wa.me/263787166281?text=Hello Benike Technologies, I would like to order ${encodeURIComponent(product.Name)}`;
 
-    /* ANALYTICS */
+    /* analytics */
+    analytics.views[product.Name] =
+    (analytics.views[product.Name] || 0) + 1;
 
-    analytics.views[
-        product.Name
-    ] =
+    localStorage.setItem("analytics", JSON.stringify(analytics));
 
-    (
-        analytics.views[
-            product.Name
-        ] || 0
-    ) + 1;
+    /* auto slider */
+    clearInterval(window.productSlider);
 
-    localStorage.setItem(
-        "analytics",
-        JSON.stringify(analytics)
-    );
+    window.productSlider = setInterval(()=>{
+        nextImage();
+    },3000);
 
-    /* IMAGE SLIDER */
+    document.getElementById("productModal").style.display = "flex";
+}
 
-    currentImages = finalImages;
-currentImageIndex = 0;
+/* ===================================
+NEXT / PREV IMAGE (GLOBAL)
+=================================== */
 
-modalImage.src =
-currentImages[currentImageIndex];
-
-clearInterval(window.productSlider);
-
-window.productSlider = setInterval(() => {
-
-    nextImage();
-
-}, 3000);
-    function nextImage(){
+function nextImage(){
 
     if(currentImages.length <= 1) return;
 
     currentImageIndex++;
 
     if(currentImageIndex >= currentImages.length){
-
         currentImageIndex = 0;
-
     }
 
-    document.getElementById(
-    "modalImage"
-    ).src =
+    document.getElementById("modalImage").src =
     currentImages[currentImageIndex];
-
 }
 
 function prevImage(){
@@ -309,34 +239,22 @@ function prevImage(){
     currentImageIndex--;
 
     if(currentImageIndex < 0){
-
-        currentImageIndex =
-        currentImages.length - 1;
-
+        currentImageIndex = currentImages.length - 1;
     }
 
-    document.getElementById(
-    "modalImage"
-    ).src =
+    document.getElementById("modalImage").src =
     currentImages[currentImageIndex];
-
 }
 
 /* ===================================
-CLOSE PRODUCT
+CLOSE MODAL
 =================================== */
 
 function closeProduct(){
 
-    clearInterval(
-        window.productSlider
-    );
+    clearInterval(window.productSlider);
 
-    document.getElementById(
-    "productModal"
-    ).style.display =
-    "none";
-
+    document.getElementById("productModal").style.display = "none";
 }
 
 /* ===================================
@@ -345,21 +263,15 @@ CLICK OUTSIDE
 
 window.onclick = function(e){
 
-    const modal =
-    document.getElementById(
-        "productModal"
-    );
+    const modal = document.getElementById("productModal");
 
     if(e.target === modal){
-
         closeProduct();
-
     }
-
 };
 
 /* ===================================
-INITIAL LOAD
+INIT
 =================================== */
 
 renderProducts(filteredProducts);
